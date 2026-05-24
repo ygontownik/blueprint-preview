@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Operating Model Blueprint — Visual Preview</title>
+<style>
+:root {
+  --bg: #FAF7F0;
+  --surface: #FFFFFF;
+  --surface-2: #F5F1E8;
+  --surface-3: #EEE8D9;
+  --border: #E5DFD0;
+  --border-strong: #C9BFA6;
+  --text: #1F2937;
+  --text-muted: #6B7280;
+  --text-soft: #9CA3AF;
+  --accent: #2A5A4E;
+  --accent-2: #3B7D6B;
+  --accent-soft: #DDE9E5;
+  --accent-deep: #1F4438;
+  --warning: #B45309;
+  --warning-soft: #FEF3C7;
+  --danger: #991B1B;
+  --danger-soft: #FEE2E2;
+  --success: #166534;
+  --success-soft: #DCFCE7;
+  --info: #1E40AF;
+  --info-soft: #DBEAFE;
+  --shadow-sm: 0 1px 2px rgba(31, 41, 55, 0.04);
+  --shadow: 0 1px 3px rgba(31, 41, 55, 0.06), 0 1px 2px rgba(31, 41, 55, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(31, 41, 55, 0.06), 0 2px 4px -2px rgba(31, 41, 55, 0.06);
+  --radius: 8px;
+  --radius-sm: 6px;
+  --radius-lg: 12px;
+  --max-width: 1280px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: var(--shadow-sm);
+}
+.header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.brand-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.brand {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+.brand-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-left: 8px;
+}
+.meta-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.pill strong { color: var(--text); margin-right: 4px; font-weight: 600; }
+
+.tab-bar-wrap {
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  position: relative;
+}
+nav.tabs {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+nav.tabs::-webkit-scrollbar { height: 4px; }
+nav.tabs::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
+.tab {
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.tab:hover { color: var(--text); background: var(--surface-2); }
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+.tab-emoji { margin-right: 6px; opacity: 0.9; }
+
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 28px 24px;
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+h1, h2, h3, h4 {
+  margin-top: 0;
+  color: var(--text);
+  font-weight: 600;
+}
+h1 { font-size: 28px; margin-bottom: 8px; letter-spacing: -0.01em; }
+h2 { font-size: 19px; margin-bottom: 14px; margin-top: 32px; }
+h3 { font-size: 15px; margin-bottom: 8px; margin-top: 20px; }
+h4 { font-size: 11px; margin-bottom: 6px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+
+.lede {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  max-width: 740px;
+  line-height: 1.6;
+}
+
+.hero {
+  background: linear-gradient(135deg, var(--accent-deep), var(--accent));
+  color: white;
+  padding: 36px 32px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-md);
+}
+.hero h1 { color: white; font-size: 30px; margin-bottom: 12px; }
+.hero p { color: rgba(255,255,255,0.92); font-size: 16px; max-width: 740px; line-height: 1.6; margin: 0 0 0; }
+.hero .hero-meta {
+  margin-top: 20px;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.18);
+}
+.hero-meta div { color: rgba(255,255,255,0.85); font-size: 13px; }
+.hero-meta strong { display: block; color: white; font-size: 22px; font-weight: 600; margin-bottom: 2px; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+.card-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.grid { display: grid; gap: 16px; }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 820px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}
+
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.kpi-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+.kpi-value { font-size: 26px; font-weight: 600; margin-top: 4px; color: var(--text); }
+.kpi-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  padding: 10px 12px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--surface-2); }
+
+code, .mono {
+  font-family: "SF Mono", "Monaco", "Menlo", Consolas, monospace;
+  font-size: 12px;
+  background: var(--surface-3);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--text);
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.badge-leverage { background: var(--success-soft); color: var(--success); }
+.badge-build    { background: var(--info-soft); color: var(--info); }
+.badge-procure  { background: var(--warning-soft); color: var(--warning); }
+.badge-hybrid   { background: var(--accent-soft); color: var(--accent); }
+.badge-high { background: var(--danger-soft); color: var(--danger); }
+.badge-medium { background: var(--warning-soft); color: var(--warning); }
+.badge-low { background: var(--success-soft); color: var(--success); }
+.badge-planned { background: var(--surface-3); color: var(--text-muted); }
+.badge-in_design { background: var(--info-soft); color: var(--info); }
+.badge-live { background: var(--success-soft); color: var(--success); }
+
+/* Stage cards (numbered walkthroughs) */
+.stage {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.stage-num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+}
+.stage-body h3 { margin-top: 0; font-size: 16px; }
+.stage-what { font-size: 14px; color: var(--text); margin-bottom: 10px; }
+.stage-why {
+  font-size: 13px;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent);
+}
+.stage-why strong { color: var(--accent); }
+
+/* Day-in-life walkthrough */
+.day-item {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.day-item:last-child { border-bottom: none; }
+.day-icon { font-size: 18px; }
+.day-text { font-size: 14px; }
+.day-text strong { display: block; color: var(--text); margin-bottom: 2px; font-size: 13px; }
+.day-text span { color: var(--text-muted); }
+
+/* Phase cards (Day 30/90/180/365) */
+.phase-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.phase-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.phase-card h3 { margin: 0; font-size: 17px; color: var(--accent); }
+.phase-card .phase-sub { color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+.phase-experience {
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--text);
+}
+.phase-experience strong { color: var(--accent-deep); }
+.phase-deliverables { font-size: 13px; }
+.phase-deliverables strong { display: block; color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+.phase-deliverables ul { margin: 0; padding-left: 20px; }
+.phase-deliverables li { margin-bottom: 4px; color: var(--text); }
+
+/* Two-column you-bring / system-brings */
+.bring-block { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+@media (max-width: 820px) { .bring-block { grid-template-columns: 1fr; } }
+.bring-col {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.bring-col h3 { margin-top: 0; font-size: 14px; color: var(--accent); }
+.bring-col ul { padding-left: 22px; margin: 0; }
+.bring-col li { margin-bottom: 8px; font-size: 13px; }
+
+.flow-callout {
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  padding: 14px 18px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.flow-callout strong { color: var(--accent-deep); }
+
+/* Layer × Plane matrix */
+.layer-plane-matrix {
+  display: grid;
+  grid-template-columns: 140px repeat(7, minmax(0, 1fr));
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.lpm-cell {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  min-height: 80px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.lpm-cell:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.lpm-header {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+  font-weight: 600;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  cursor: default;
+}
+.lpm-header:hover { transform: none; border-color: var(--border-strong); }
+.lpm-row-header { background: var(--surface-2); font-weight: 600; }
+.lpm-row-header strong { display: block; font-size: 13px; }
+.lpm-row-header span { color: var(--text-muted); font-size: 11px; font-weight: 400; }
+.lpm-cell-id { font-weight: 600; color: var(--accent); font-size: 10px; }
+.lpm-cell-text { color: var(--text-muted); margin-top: 4px; }
+@media (max-width: 1000px) {
+  .layer-plane-matrix { grid-template-columns: 110px repeat(7, minmax(60px, 1fr)); font-size: 10px; }
+  .lpm-cell { padding: 6px; min-height: 60px; }
+}
+
+/* Section browser */
+.section-list { display: grid; grid-template-columns: 280px 1fr; gap: 16px; }
+@media (max-width: 820px) { .section-list { grid-template-columns: 1fr; } }
+.section-nav {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px;
+  max-height: 70vh;
+  overflow-y: auto;
+  position: sticky;
+  top: 130px;
+}
+.section-nav-item {
+  display: block;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid transparent;
+}
+.section-nav-item:hover { background: var(--surface-2); }
+.section-nav-item.active {
+  background: var(--accent-soft);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+.section-nav-item .sn-num {
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-right: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.section-detail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+/* Roadmap */
+.roadmap-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+.phase-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 80px;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  align-items: center;
+}
+.phase-label { font-weight: 600; }
+.phase-label small { display: block; color: var(--text-muted); font-weight: 400; margin-top: 2px; }
+.phase-bar-track { position: relative; height: 24px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+.phase-bar-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 4px;
+}
+.phase-bar-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  z-index: 1;
+}
+.phase-days { font-size: 12px; color: var(--text-muted); text-align: right; }
+
+pre { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; overflow-x: auto; font-size: 12px; line-height: 1.5; }
+pre code { background: none; padding: 0; }
+ul, ol { padding-left: 22px; }
+li { margin-bottom: 4px; }
+.muted { color: var(--text-muted); }
+.small { font-size: 12px; }
+.spacer { height: 24px; }
+
+footer {
+  max-width: var(--max-width);
+  margin: 40px auto 24px;
+  padding: 16px 24px;
+  font-size: 11px;
+  color: var(--text-soft);
+  border-top: 1px solid var(--border);
+}
+
+.diagram-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+/* Horizontal flow diagram (architecture) */
+.flow-diagram {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: max-content;
+}
+.flow-node {
+  flex: 0 0 auto;
+  width: 130px;
+  padding: 12px;
+  border-radius: var(--radius);
+  text-align: center;
+  font-size: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+}
+.flow-node.pipe { background: var(--accent-soft); border-color: var(--accent); }
+.flow-node.state { background: var(--surface); border: 2px solid var(--accent); font-weight: 600; }
+.flow-node.surf { background: var(--bg); }
+.flow-step {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 22px;
+  margin-bottom: 6px;
+}
+.flow-title { font-weight: 600; font-size: 13px; color: var(--text); }
+.flow-desc { color: var(--text-muted); font-size: 11px; margin-top: 4px; line-height: 1.4; }
+.flow-arrow { color: var(--accent); font-size: 22px; font-weight: 700; flex: 0 0 auto; }
+/* Timeline (critical path) */
+.timeline {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  min-width: max-content;
+  padding: 24px 0 12px;
+}
+.tl-item {
+  flex: 0 0 auto;
+  text-align: center;
+  width: 130px;
+  position: relative;
+}
+.tl-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  border: 3px solid var(--surface);
+  box-shadow: 0 0 0 2px var(--accent);
+  background: var(--accent);
+  position: relative;
+  z-index: 2;
+}
+.tl-dot.gate { background: var(--warning); box-shadow: 0 0 0 2px var(--warning); }
+.tl-label { font-size: 12px; font-weight: 600; color: var(--text); padding: 0 6px; }
+.tl-day { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.tl-line {
+  flex: 1 1 auto;
+  height: 2px;
+  background: var(--border-strong);
+  margin-top: 31px;
+  min-width: 16px;
+}
+.tl-legend {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 16px;
+  text-align: center;
+}
+.tl-legend span { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin: 0 4px 0 12px; vertical-align: middle; }
+/* Knowledge graph clusters */
+.kg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+.kg-cluster {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  background: var(--surface);
+}
+.kg-cluster.people { border-left: 4px solid var(--accent); }
+.kg-cluster.agencies { border-left: 4px solid var(--info); }
+.kg-cluster.programs { border-left: 4px solid var(--warning); }
+.kg-cluster.authorities { border-left: 4px solid var(--border-strong); }
+.kg-cluster.commitments { border-left: 4px solid var(--danger); }
+.kg-cluster h4 {
+  margin: 0 0 10px;
+  text-transform: none;
+  font-size: 13px;
+  color: var(--text);
+  letter-spacing: 0;
+}
+.kg-node {
+  font-size: 12px;
+  padding: 6px 10px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  margin-bottom: 6px;
+}
+.kg-node:last-child { margin-bottom: 0; }
+
+/* Dashboard mockup styles */
+.browser-chrome {
+  background: linear-gradient(180deg, #ECE6D6, #DDD5C1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 9px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.browser-dots { display: flex; gap: 6px; }
+.browser-dot { width: 11px; height: 11px; border-radius: 50%; background: #FF5F57; }
+.browser-dot:nth-child(2) { background: #FFBD2E; }
+.browser-dot:nth-child(3) { background: #28C940; }
+.browser-url {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 5px 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: "SF Mono", "Monaco", monospace;
+}
+.mockup-frame {
+  border: 1px solid var(--border-strong);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  background: white;
+  padding: 22px;
+  margin-bottom: 4px;
+  box-shadow: var(--shadow-md);
+}
+.mockup-note { font-size: 12px; color: var(--text-muted); padding: 6px 14px; margin-bottom: 32px; }
+.mock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.mock-greeting { font-size: 20px; font-weight: 600; color: var(--text); }
+.mock-date { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.classif-banner {
+  background: var(--accent);
+  color: white;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.decision-item {
+  border-left: 3px solid var(--warning);
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  background: var(--surface-2);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.decision-item:last-child { margin-bottom: 0; }
+.decision-item strong { display: block; font-size: 13px; margin-bottom: 2px; }
+.decision-item > span { font-size: 11px; color: var(--text-muted); display: block; }
+.mini-btn {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  font-family: inherit;
+  margin-right: 4px;
+  margin-top: 6px;
+  color: var(--text);
+}
+.mini-btn:hover { background: var(--surface-3); }
+.mini-btn.approve { background: var(--accent); color: white; border-color: var(--accent); }
+.mini-btn.approve:hover { background: var(--accent-deep); }
+.portfolio-heatmap {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 5px;
+  margin-top: 8px;
+}
+.heat-cell {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: white;
+}
+.heat-green { background: #166534; }
+.heat-amber { background: #B45309; }
+.heat-red { background: #991B1B; }
+.deliv-row {
+  display: grid;
+  grid-template-columns: 1fr 120px 100px;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  align-items: center;
+}
+.deliv-row:last-child { border-bottom: none; padding-bottom: 0; }
+.deliv-row:first-child { padding-top: 0; }
+.progress-bar { height: 6px; background: var(--surface-3); border-radius: 3px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; }
+.filter-chips { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.chip {
+  padding: 5px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+}
+.chip.active { background: var(--accent); color: white; border-color: var(--accent); }
+.chip:hover:not(.active) { background: var(--surface-3); }
+.perf-row {
+  display: grid;
+  grid-template-columns: 32px 1fr 90px 140px 130px;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  align-items: center;
+}
+.perf-row:last-child { border-bottom: none; padding-bottom: 0; }
+.perf-row:first-child { padding-top: 0; }
+.perf-rank {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.perf-rank.top { background: var(--success-soft); color: var(--success); }
+.perf-rank.bottom { background: var(--danger-soft); color: var(--danger); }
+.indicator-bar { height: 8px; background: var(--surface-3); border-radius: 4px; overflow: hidden; position: relative; }
+.indicator-fill { height: 100%; border-radius: 4px; }
+.indicator-fill.good { background: var(--success); }
+.indicator-fill.warn { background: var(--warning); }
+.indicator-fill.bad { background: var(--danger); }
+@media (max-width: 820px) {
+  .deliv-row { grid-template-columns: 1fr; gap: 6px; }
+  .perf-row { grid-template-columns: 32px 1fr; gap: 8px; }
+  .perf-row > div:nth-child(n+3) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand-row">
+      <div>
+        <span class="brand">AI Operating Model Blueprint</span>
+        <span class="brand-sub">Visual preview · for the Head of Team and Head of AI</span>
+      </div>
+      <div class="meta-pills">
+        <span class="pill"><strong>FTE</strong><span id="m-fte"></span></span>
+        <span class="pill"><strong>Programs</strong><span id="m-progs"></span></span>
+        <span class="pill"><strong>Direct reports</strong><span id="m-drs"></span></span>
+        <span class="pill"><strong>Compiled</strong><span id="m-compiled"></span></span>
+      </div>
+    </div>
+  </div>
+  <div class="tab-bar-wrap">
+    <div class="header-inner">
+      <nav class="tabs" id="tabs">
+        <button class="tab active" data-view="start"><span class="tab-emoji">👋</span>Start Here</button>
+        <button class="tab" data-view="mockups"><span class="tab-emoji">📺</span>Dashboard Mockups</button>
+        <button class="tab" data-view="how"><span class="tab-emoji">⚙️</span>How It Works</button>
+        <button class="tab" data-view="roadmap"><span class="tab-emoji">🗺️</span>12-Month Plan</button>
+        <button class="tab" data-view="exec"><span class="tab-emoji">📊</span>Executive Summary</button>
+        <button class="tab" data-view="matrix"><span class="tab-emoji">🔲</span>Architecture</button>
+        <button class="tab" data-view="sections"><span class="tab-emoji">📑</span>18 Sections</button>
+        <button class="tab" data-view="leverage"><span class="tab-emoji">♻️</span>Leverage vs Build</button>
+        <button class="tab" data-view="risks"><span class="tab-emoji">⚠️</span>Risks</button>
+        <button class="tab" data-view="open"><span class="tab-emoji">❓</span>Open Questions</button>
+        <button class="tab" data-view="actions"><span class="tab-emoji">✅</span>Actions</button>
+        <button class="tab" data-view="patterns"><span class="tab-emoji">🧬</span>Patterns</button>
+        <button class="tab" data-view="graph"><span class="tab-emoji">🕸️</span>Knowledge Graph</button>
+        <button class="tab" data-view="leverage-repos"><span class="tab-emoji">📦</span>Repo Inventory</button>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================ START HERE ============================ -->
+<section class="view active" id="view-start">
+
+  <div class="hero">
+    <h1>What this system gives you</h1>
+    <p>You run a 400-person team across 20 active programs with 10 more to stand up. Today you're getting paper briefings, fragmented status updates, and inter-agency commitments that slip through the cracks. This blueprint lays out an AI-powered operating system — one live dashboard, hydrated from one source of truth — so you see everything that matters in your team, in real time, every day.</p>
+    <div class="hero-meta">
+      <div><strong>1 day</strong>to first working dashboard</div>
+      <div><strong>2 weeks</strong>to live for you + your 6 DRs</div>
+      <div><strong>4–6 months</strong>to all 30 programs running on it</div>
+      <div><strong>~70%</strong>reuses existing code (not built from scratch)</div>
+    </div>
+  </div>
+
+  <h2>A Monday morning, six months from now</h2>
+  <p class="lede">You open one browser tab. Everything is already up to date. Here's what's in front of you:</p>
+
+  <div class="card">
+    <div class="day-item">
+      <div class="day-icon">📰</div>
+      <div class="day-text">
+        <strong>What moved over the weekend</strong>
+        <span>Every meeting your team had Friday, every email your office sent, every Federal Register notice or OMB memo touching one of your 30 programs — already summarized, routed to the right people, and on the right person's action list. You see the top 5; click any to drill in.</span>
+      </div>
+    </div>
+    <div class="day-item">
+      <div class="day-icon">⚖️</div>
+      <div class="day-text">
+        <strong>Today's decisions queued for you</strong>
+        <span>Five things need your call before 10am. Each one has a one-paragraph summary, the options, who recommends what, and one click to approve or send back with comments.</span>
+      </div>
+    </div>
+    <div class="day-item">
+      <div class="day-icon">🚩</div>
+      <div class="day-text">
+        <strong>What's slipping</strong>
+        <span>Three programs are behind on milestones. The system flagged them last week, told the relevant DRs, and the DRs already responded with what they're doing about it. You see the whole chain in one view.</span>
+      </div>
+    </div>
+    <div class="day-item">
+      <div class="day-icon">🌍</div>
+      <div class="day-text">
+        <strong>External signal that affects you</strong>
+        <span>OMB sent two memos last week. Both already analyzed against your 30 programs — one affects 8 of them, the other affects 2. Draft responses are ready for the relevant program leads to review.</span>
+      </div>
+    </div>
+    <div class="day-item">
+      <div class="day-icon">🤝</div>
+      <div class="day-text">
+        <strong>Inter-agency commitments due this week</strong>
+        <span>Seven of them. Each one already has read-ahead material ready. The people you're meeting with are profiled — positions, history with your office, what they care about — pulled from the knowledge graph.</span>
+      </div>
+    </div>
+    <div class="day-item">
+      <div class="day-icon">📈</div>
+      <div class="day-text">
+        <strong>Performance pulse</strong>
+        <span>Your 30 programs ranked by leading indicators. Two are over-delivering — the system has extracted what they're doing differently and proposed promoting those practices to the standard playbook every program runs on.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-callout">
+    <strong>Now picture this multiplied:</strong> every one of your 6 DRs gets their own version of this, filtered to their span. Every program director gets it for their program. Every legal / finance / eval staffer gets it for their function. All of them reading from the same source of truth — the same numbers, the same actions, the same commitments. No more "wait, which version is current?"
+  </div>
+
+  <h2>How we get from here to there</h2>
+
+  <div class="phase-card">
+    <div class="phase-card-head"><h3>Days 0–14 · Foundations</h3><span class="phase-sub">Prove it works for the leadership team first</span></div>
+    <div class="phase-experience"><strong>What you experience:</strong> by Day 14, you and your 6 DRs are opening the dashboard every morning. Daily briefings show up at 7:30am. Actions you assign in a meeting show up automatically. You're not waiting for status updates — you're reading them.</div>
+    <div class="phase-deliverables"><strong>Under the hood</strong>
+      <ul>
+        <li>FedRAMP-cleared Claude access procured</li>
+        <li>3–5 person AI team stood up</li>
+        <li>Governance charter published (who decides what)</li>
+        <li>Executive Intelligence layer + dashboard + briefings live for you + 6 DRs</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-card-head"><h3>Days 15–45 · Three lighthouse programs</h3><span class="phase-sub">Prove it scales to programs, not just the corner office</span></div>
+    <div class="phase-experience"><strong>What you experience:</strong> pick 3 programs — one high-performer, one struggler, one new launch. By Day 45 each runs on the standard kit. You see them in your dashboard the same way you see your DRs. Span functions (legal, finance) ship their first quick wins: FOIA backlog cleared, contract review queue moving, budget tracking real-time.</div>
+    <div class="phase-deliverables"><strong>Under the hood</strong>
+      <ul>
+        <li>Program-in-a-Box v1 (the standard kit every program gets)</li>
+        <li>Universal action flow live across leadership + program layers</li>
+        <li>Capture pipeline ingesting meetings + email</li>
+        <li>External intelligence ingestion live for top 3 feeds (Federal Register, regs.gov, OMB)</li>
+        <li>Inter-agency commitment tracker v1</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-card-head"><h3>Days 46–90 · All 20 existing programs</h3><span class="phase-sub">Rollout from 3 → 20</span></div>
+    <div class="phase-experience"><strong>What you experience:</strong> every existing program on the standard kit. Portfolio rollup view goes live — you see all 20 programs side-by-side, ranked on health. The first net-new programs start launching on the kit. Performance pulse runs weekly instead of annually.</div>
+    <div class="phase-deliverables"><strong>Under the hood</strong>
+      <ul>
+        <li>Knowledge graph operational (people / programs / authorities / commitments linked)</li>
+        <li>External intelligence expanded to full feed set</li>
+        <li>Performance intelligence layer running</li>
+        <li>Span function expansion (more workflows automated)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-card-head"><h3>Days 91–180 · Full maturity</h3><span class="phase-sub">All 30 programs, continuous evaluation, hardened</span></div>
+    <div class="phase-experience"><strong>What you experience:</strong> all 10 new programs launched on the standard kit. Continuous evaluation has replaced your annual review cycle. The learning system is feeding best practices from top performers back into the standard kit every quarter. Every plane has health checks and SLAs.</div>
+    <div class="phase-deliverables"><strong>Under the hood</strong>
+      <ul>
+        <li>All 7 capability planes hardened with health checks + SLAs</li>
+        <li>Cross-program intelligence fully operational</li>
+        <li>Full inter-agency coordination layer live</li>
+        <li>Continuous evaluation displacing annual cycle</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>What you bring vs. what the AI Lead brings</h2>
+  <div class="bring-block">
+    <div class="bring-col">
+      <h3>👤 You (Head of Team)</h3>
+      <ul>
+        <li>Decision on which 3 programs are first</li>
+        <li>Sponsor cover for the FedRAMP / ATO compliance path</li>
+        <li>30 minutes per week with the AI Lead for the first 90 days</li>
+        <li>One demo to the agency CAIO at Day 30 milestone</li>
+        <li>Authority to pick the 6 DR-area domain liaisons</li>
+      </ul>
+    </div>
+    <div class="bring-col">
+      <h3>🤖 The AI Lead</h3>
+      <ul>
+        <li>12–18 FTE team built over 12 months</li>
+        <li>4-day dashboard fork from existing scaffolding (~70% reused)</li>
+        <li>Compliance posture inherited from existing FedRAMP Claude tenant</li>
+        <li>$8–12M Y1 budget envelope</li>
+        <li>Governance charter, change management plan, training curriculum</li>
+        <li>Vendor management with Anthropic + commercial software</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>What you don't have to do</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-title">🚫 Build any of this from scratch</div>
+      <p class="muted" style="margin: 0; font-size: 13px;">~70% reuses scaffolding that already exists in proven production code. The architecture, the dashboard server, the action flow, the knowledge graph builder, the capture pipelines — all already-built patterns adapted to scale. The blueprint cites every leverage point.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">🚫 Replace any existing system</div>
+      <p class="muted" style="margin: 0; font-size: 13px;">ServiceNow stays ServiceNow. FOIAonline stays FOIAonline. The case management system stays. The dashboard sits on top of and reads from existing systems via MCP integrations. Nothing gets ripped out.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">🚫 Train every staffer immediately</div>
+      <p class="muted" style="margin: 0; font-size: 13px;">Tiered rollout: executives first (you + 6 DRs), then 3 lighthouse programs, then the rest. Most staff experience the system through dashboards they read — they don't have to learn to write skills or configure pipelines.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">🚫 Bet the agency on this</div>
+      <p class="muted" style="margin: 0; font-size: 13px;">Three lighthouse programs prove it first. Hard go/no-go gates at Day 30, Day 90, Day 180. If a gate fails, you don't proceed — and you've still built foundational compliance + leadership-tier capability that has value standalone.</p>
+    </div>
+  </div>
+
+  <h2>The pitch in one line</h2>
+  <div class="flow-callout" style="font-size: 16px;">
+    Your team of 400 people running on the same operating model that a 2-person investment shop already proved works — just multiplied, hardened for federal, and adapted for policy work. <strong>One canonical state, many surfaces.</strong> Everyone reads from the same source of truth.
+  </div>
+
+  <p class="muted">The remaining tabs above show the work behind this pitch — the architecture, the 18-section blueprint, the 12-month phasing, the leverage decisions, the risks, the open questions. Start with <a href="#" onclick="showView('how'); return false;">How It Works</a> if you want the mechanics, or <a href="#" onclick="showView('roadmap'); return false;">12-Month Plan</a> for sequencing.</p>
+</section>
+
+<!-- ============================ HOW IT WORKS ============================ -->
+<section class="view" id="view-how">
+  <h1>How It Works</h1>
+  <p class="lede">Seven stages, end to end. Each one explains what happens, in plain English, and why it matters. The whole pipeline runs in the background — most days, you don't think about it. You just open the dashboard.</p>
+
+  <div class="stage">
+    <div class="stage-num">1</div>
+    <div class="stage-body">
+      <h3>Source materials come in</h3>
+      <div class="stage-what">Every meeting recorded, every email received, every document filed, every Federal Register notice published, every OMB memo issued, every congressional letter sent — all of it flows into the capture surface. Some of it is captured automatically (meetings via Otter-equivalent, emails via Gmail/Exchange integration, Federal Register via API). Some is uploaded by staff.</div>
+      <div class="stage-why"><strong>Why it matters:</strong> if it isn't captured, it can't be analyzed. The blueprint requires every input modality to be wired in with classification-appropriate handling. No "I'll just keep that in my head" — that's how things slip.</div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-num">2</div>
+    <div class="stage-body">
+      <h3>Claude extracts what matters</h3>
+      <div class="stage-what">Each captured artifact runs through an extraction skill — different model for different jobs (Sonnet for parsing transcripts, Haiku for fast routing, Opus for ambiguous cases). Out comes structured data: actions with named owners and due dates, decisions with context, commitments with named counterparties, intelligence with named programs it affects.</div>
+      <div class="stage-why"><strong>Why it matters:</strong> raw transcripts and inbox contents are unusable at scale. You need them turned into rows: <em>who owes what to whom by when</em>. That's the conversion this stage does.</div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-num">3</div>
+    <div class="stage-body">
+      <h3>Everything gets routed to the right place</h3>
+      <div class="stage-what">An action goes to the owner's queue, the program's action register, the relevant DR's dashboard, and (if it's inter-agency) the commitment tracker. Owner names get validated against the org's owner registry — typos and ambiguous attributions get flagged for review rather than silently misattributed. External intelligence gets matched to the programs it touches via the authority graph (a Federal Register notice on rule X appears on the dashboard of every program implementing rule X).</div>
+      <div class="stage-why"><strong>Why it matters:</strong> the same fact needs to appear in every place where someone might look for it — without manual duplication. That's the "universal action flow" principle. Capture once, surface everywhere.</div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-num">4</div>
+    <div class="stage-body">
+      <h3>The canonical state gets compiled</h3>
+      <div class="stage-what">All the extracted, routed data gets written into one JSON file: <code>blueprint-state.json</code>. This file is the single source of truth for every dashboard, every briefing, every export. Before it's written, health checks run: schema validation (required fields present), owner whitelist check, past-due classification, tombstone respect (dismissed items stay dismissed).</div>
+      <div class="stage-why"><strong>Why it matters:</strong> "one canonical state, many surfaces" is the single most important architectural principle. If you let different views read from different sources, you get the "wait, which dashboard is right?" problem that plagues big orgs. This principle prevents that.</div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-num">5</div>
+    <div class="stage-body">
+      <h3>The dashboard server picks it up and caches it</h3>
+      <div class="stage-what">A lightweight Python server (forked from the existing scaffolding) holds the canonical state in memory. When anyone hits any view — executive, per-DR, per-program, per-span function, portfolio, inter-agency, performance — the server hydrates the HTML from the cached state in milliseconds. PIV/CAC SSO gates access; the compile step has already masked any data the user shouldn't see for their role and classification level.</div>
+      <div class="stage-why"><strong>Why it matters:</strong> dashboard performance is what makes people actually use it. Sub-50ms refresh, no waiting, no spinners. And the role-based masking keeps things in compliance — a DR sees their span, not someone else's.</div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-num">6</div>
+    <div class="stage-body">
+      <h3>You and your team interact with it</h3>
+      <div class="stage-what">You read briefings, drill into programs, resolve actions, dismiss outdated risks, answer open questions, sign off on decisions. Every interaction writes back to the canonical state. Dismissed items get tombstoned (they won't come back next compile). Resolved actions get classified (Resolved / Superseded / Stage-graduated / Rolled forward / Blocked) so the dashboard doesn't fill with stale items.</div>
+      <div class="stage-why"><strong>Why it matters:</strong> a dashboard that fills with stale items teaches you to ignore the dates. The tombstone-and-classification discipline keeps it trustworthy. When you see "12 actions overdue," you trust the number.</div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-num">7</div>
+    <div class="stage-body">
+      <h3>The system gets smarter over time</h3>
+      <div class="stage-what">Best practices from your top-performing programs get extracted automatically and proposed for promotion into the standard kit. Patterns that surface as repeated drift (e.g., a particular kind of misattribution) get encoded as new rules in the learning ledger, with enforcement checks added. The practice patterns library grows — every cleared program design contributes its lessons to the next.</div>
+      <div class="stage-why"><strong>Why it matters:</strong> institutional knowledge in most orgs lives in people's heads and walks out the door at retirement. This system makes it accumulate in the codebase instead. Year 2 starts smarter than Year 1 ended.</div>
+    </div>
+  </div>
+
+  <h2>The whole thing in one diagram</h2>
+  <div class="diagram-box">
+    <div class="flow-diagram">
+      <div class="flow-node"><div class="flow-step">1</div><div class="flow-title">Capture</div><div class="flow-desc">meetings, email,<br>docs, feeds</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node pipe"><div class="flow-step">2</div><div class="flow-title">Extract</div><div class="flow-desc">actions, decisions,<br>intel via Claude</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node pipe"><div class="flow-step">3</div><div class="flow-title">Route</div><div class="flow-desc">to owners, programs,<br>DRs, inter-agency</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node pipe"><div class="flow-step">4</div><div class="flow-title">Compile</div><div class="flow-desc">+ health checks</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node state"><div class="flow-title">blueprint-<br>state.json</div><div class="flow-desc">canonical state</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node pipe"><div class="flow-step">5</div><div class="flow-title">Serve</div><div class="flow-desc">cached HTML<br>hydration</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node surf"><div class="flow-step">6</div><div class="flow-title">You + Team</div><div class="flow-desc">read + act</div></div>
+      <div class="flow-arrow">↻</div>
+      <div class="flow-node pipe"><div class="flow-step">7</div><div class="flow-title">Learn</div><div class="flow-desc">best practices<br>back into kit</div></div>
+    </div>
+    <div style="margin-top: 14px; font-size: 12px; color: var(--text-muted); text-align: center;">Steps 6 → 4 (actions write back) and 7 → 4 (learnings update standard kit) close the loop</div>
+  </div>
+
+  <h2>The two axes you'll see everywhere</h2>
+  <p>The blueprint organizes work along two axes. <strong>Six vertical operating layers</strong> describe who does what work. <strong>Seven horizontal capability planes</strong> describe the shared infrastructure that supports every layer. See the <a href="#" onclick="showView('matrix'); return false;">Architecture</a> tab for the 42-cell matrix.</p>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-title">Six layers — "who does what"</div>
+      <ol style="font-size: 13px;">
+        <li><strong>L1 Executive Intelligence</strong> — you + your 6 DRs</li>
+        <li><strong>L2 Program Operations</strong> — program directors + teams</li>
+        <li><strong>L3 Span Functions</strong> — legal, finance, perf eval, comms</li>
+        <li><strong>L4 Cross-Program Intelligence</strong> — portfolio analytics</li>
+        <li><strong>L5 Inter-Agency Liaison</strong> — external coordination</li>
+        <li><strong>L6 Performance & Learning</strong> — continuous evaluation</li>
+      </ol>
+    </div>
+    <div class="card">
+      <div class="card-title">Seven planes — "shared infrastructure"</div>
+      <ol style="font-size: 13px;">
+        <li><strong>P1 Live Operational Dashboard</strong> — the UI</li>
+        <li><strong>P2 Universal Action Flow</strong> — actions everywhere</li>
+        <li><strong>P3 External Intelligence</strong> — what's happening outside</li>
+        <li><strong>P4 Context Architecture</strong> — memory + registries</li>
+        <li><strong>P5 Capture Surface</strong> — every input ingested</li>
+        <li><strong>P6 Synthesis & Briefing</strong> — multi-tier briefings</li>
+        <li><strong>P7 Knowledge Graph</strong> — people / programs / commitments linked</li>
+      </ol>
+    </div>
+  </div>
+
+  <h2>What's leveraged vs. built</h2>
+  <p>~70% of the dashboard scaffolding reuses code that already exists in three GitHub repos (the existing 2-person system). Net-new is the data shape, the federal-context skills, and the deployment. See the <a href="#" onclick="showView('leverage-repos'); return false;">Repo Inventory</a> tab for file-by-file leverage callouts. Full step-by-step build plan in <code>fork-plan.md</code>.</p>
+</section>
+
+<!-- ============================ EXECUTIVE SUMMARY ============================ -->
+<section class="view" id="view-exec">
+  <h1>Executive Summary</h1>
+  <p class="lede">Top-of-pyramid view for you and the Head of AI. Single screen, single source of truth, hydrated from <code>blueprint-state.json</code>.</p>
+
+  <div class="grid grid-4" id="exec-kpis"></div>
+
+  <div class="spacer"></div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-title">Operating layers — status snapshot</div>
+      <div class="card-sub">L1–L6 vertical layers (who does work)</div>
+      <div id="exec-layers"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Capability planes — status snapshot</div>
+      <div class="card-sub">P1–P7 horizontal planes (shared infrastructure)</div>
+      <div id="exec-planes"></div>
+    </div>
+  </div>
+
+  <h2>Top risks</h2>
+  <div id="exec-risks"></div>
+
+  <h2>Top open questions</h2>
+  <div id="exec-openq"></div>
+
+  <h2>Top actions due</h2>
+  <div id="exec-actions"></div>
+</section>
+
+<!-- ============================ ARCHITECTURE ============================ -->
+<section class="view" id="view-matrix">
+  <h1>Architecture — the 42 intersections</h1>
+  <p class="lede">The operating model has two axes: 6 vertical operating layers × 7 horizontal capability planes. Every intersection describes what flows between the layer and the plane. Hover any cell.</p>
+  <div class="layer-plane-matrix" id="lpm-grid"></div>
+  <div class="flow-callout">
+    <strong>How to read this:</strong> rows are operating layers (who does work), columns are capability planes (shared infrastructure). Cell L2×P1 describes what the Program Operations layer puts on the Live Dashboard plane. Every layer must declare what it consumes from and contributes to every plane — that's the contract that prevents reinvention.
+  </div>
+</section>
+
+<!-- ============================ SECTION BROWSER ============================ -->
+<section class="view" id="view-sections">
+  <h1>The 18 sections</h1>
+  <p class="lede">The blueprint is organized into 18 sections. Each one follows the same six-part memo structure (Core Recommendation · Design Detail · Leverage-vs-Build · Open Questions · Dependencies · Success Metric).</p>
+  <div class="section-list">
+    <nav class="section-nav" id="section-nav"></nav>
+    <div class="section-detail" id="section-detail"></div>
+  </div>
+</section>
+
+<!-- ============================ ROADMAP ============================ -->
+<section class="view" id="view-roadmap">
+  <h1>12-Month Plan</h1>
+  <p class="lede">Four phases. Each one ends in a hard go/no-go gate. If a gate fails, you don't proceed — you fix the issue first.</p>
+
+  <div class="roadmap-bars" id="roadmap-bars"></div>
+
+  <div id="roadmap-cards"></div>
+
+  <h2>Critical path</h2>
+  <div class="diagram-box">
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-label">ATO Posture</div><div class="tl-day">Day 0</div></div>
+      <div class="tl-line"></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-label">FedRAMP Claude</div><div class="tl-day">Day 3</div></div>
+      <div class="tl-line"></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-label">AI Team Core</div><div class="tl-day">Day 7</div></div>
+      <div class="tl-line"></div>
+      <div class="tl-item"><div class="tl-dot gate"></div><div class="tl-label">Group Head Dashboard Live</div><div class="tl-day">Day 14 · GATE</div></div>
+      <div class="tl-line"></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-label">Program-in-a-Box v1</div><div class="tl-day">Day 28</div></div>
+      <div class="tl-line"></div>
+      <div class="tl-item"><div class="tl-dot gate"></div><div class="tl-label">3 Lighthouse Programs Live</div><div class="tl-day">Day 45 · GATE</div></div>
+      <div class="tl-line"></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-label">Knowledge Graph Live</div><div class="tl-day">Day 60</div></div>
+      <div class="tl-line"></div>
+      <div class="tl-item"><div class="tl-dot gate"></div><div class="tl-label">20 Programs Live</div><div class="tl-day">Day 90 · GATE</div></div>
+      <div class="tl-line"></div>
+      <div class="tl-item"><div class="tl-dot gate"></div><div class="tl-label">10 New Programs Launched</div><div class="tl-day">Day 150 · GATE</div></div>
+      <div class="tl-line"></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-label">All 7 Planes Hardened</div><div class="tl-day">Day 180</div></div>
+    </div>
+    <div class="tl-legend"><span style="background: var(--accent)"></span>Milestone<span style="background: var(--warning)"></span>Go/No-Go Gate</div>
+  </div>
+</section>
+
+<!-- ============================ LEVERAGE vs BUILD ============================ -->
+<section class="view" id="view-leverage">
+  <h1>Leverage vs Build vs Procure</h1>
+  <p class="lede">Default bias: leverage first, augment second, build last. Every "build" must answer "why not leverage X?"</p>
+  <table>
+    <thead>
+      <tr><th>Capability</th><th>Claude Code native</th><th>Existing agency</th><th>Commercial</th><th>Decision</th><th>Why</th></tr>
+    </thead>
+    <tbody id="leverage-rows"></tbody>
+  </table>
+</section>
+
+<!-- ============================ RISKS ============================ -->
+<section class="view" id="view-risks">
+  <h1>Risk Register</h1>
+  <p class="lede">Top risks with probability × impact, mitigation owner, residual risk.</p>
+  <table>
+    <thead><tr><th>ID</th><th>Risk</th><th>Prob</th><th>Impact</th><th>Mitigation owner</th><th>Mitigation action</th><th>Residual</th></tr></thead>
+    <tbody id="risk-rows"></tbody>
+  </table>
+</section>
+
+<!-- ============================ OPEN QUESTIONS ============================ -->
+<section class="view" id="view-open">
+  <h1>Open Questions Register</h1>
+  <p class="lede">Every unresolved decision the Head of AI must close before execution. Same UX pattern as your follow-ups queue.</p>
+  <table>
+    <thead><tr><th>ID</th><th>Question</th><th>Owner</th><th>Status</th><th>Due</th><th>Section refs</th></tr></thead>
+    <tbody id="openq-rows"></tbody>
+  </table>
+</section>
+
+<!-- ============================ ACTIONS ============================ -->
+<section class="view" id="view-actions">
+  <h1>Actions</h1>
+  <p class="lede">Universal action flow (P2). One action ID surfaces simultaneously in every relevant view. Owner whitelist enforced. Tombstone-respecting. Past-due classification at every audit.</p>
+  <table>
+    <thead><tr><th>ID</th><th>Action</th><th>Owner</th><th>Due</th><th>Priority</th><th>Routing</th><th>Status</th></tr></thead>
+    <tbody id="action-rows"></tbody>
+  </table>
+</section>
+
+<!-- ============================ PATTERN INHERITANCE ============================ -->
+<section class="view" id="view-patterns">
+  <h1>Reference Pattern Inheritance</h1>
+  <p class="lede">Each section of the blueprint inherits one or more proven patterns from the existing 2-person system. Extensions are explicit — never silent reinvention.</p>
+  <table>
+    <thead><tr><th>Pattern</th><th>Name</th><th>Source path</th><th>Inherited by sections</th><th>Inherited by planes</th><th>Extension notes</th></tr></thead>
+    <tbody id="pattern-rows"></tbody>
+  </table>
+</section>
+
+<!-- ============================ KNOWLEDGE GRAPH ============================ -->
+<section class="view" id="view-graph">
+  <h1>Knowledge Graph (P7)</h1>
+  <p class="lede">People, agencies, programs, authorities, commitments — all linked and queryable from any surface. Sample shown here; production scale carries thousands of nodes.</p>
+  <div class="diagram-box">
+    <div class="kg-grid">
+      <div class="kg-cluster people">
+        <h4>👤 People</h4>
+        <div class="kg-node">Greg Beard — DOE OEDF Director</div>
+        <div class="kg-node">[Group Head] — your team</div>
+        <div class="kg-node">[Program Director — LGP]</div>
+      </div>
+      <div class="kg-cluster agencies">
+        <h4>🏛️ Agencies</h4>
+        <div class="kg-node">OMB Resource Mgmt Office</div>
+        <div class="kg-node">House E&amp;C Committee</div>
+        <div class="kg-node">Treasury / IRS</div>
+        <div class="kg-node">DOE LPO</div>
+      </div>
+      <div class="kg-cluster programs">
+        <h4>📋 Programs</h4>
+        <div class="kg-node">Loan Guarantee Program</div>
+        <div class="kg-node">Grant Program A</div>
+        <div class="kg-node">Regulatory Track B</div>
+      </div>
+      <div class="kg-cluster authorities">
+        <h4>⚖️ Authorities</h4>
+        <div class="kg-node">EPAct 2005 Title XVII</div>
+        <div class="kg-node">IRA Sec 50145</div>
+        <div class="kg-node">EO 14008 (climate finance)</div>
+      </div>
+      <div class="kg-cluster commitments">
+        <h4>📌 Commitments</h4>
+        <div class="kg-node">Deliver IG Draft to OMB · Due 2026-07-15</div>
+        <div class="kg-node">Brief HEC Subcommittee · Due 2026-08-01</div>
+        <div class="kg-node">IRS 45X coord · Due 2026-06-12</div>
+      </div>
+    </div>
+    <h3 style="margin-top: 24px;">Relationships (edges)</h3>
+    <table>
+      <thead><tr><th>Source</th><th>Relationship</th><th>Target</th></tr></thead>
+      <tbody>
+        <tr><td>Loan Guarantee Program</td><td><em>implements</em></td><td>EPAct 2005 Title XVII</td></tr>
+        <tr><td>Grant Program A</td><td><em>implements</em></td><td>IRA Sec 50145</td></tr>
+        <tr><td>Greg Beard</td><td><em>directs</em></td><td>DOE OEDF</td></tr>
+        <tr><td>Deliver IG Draft</td><td><em>owed to</em></td><td>OMB RMO</td></tr>
+        <tr><td>Deliver IG Draft</td><td><em>concerns</em></td><td>Loan Guarantee Program</td></tr>
+        <tr><td>Brief HEC Subcommittee</td><td><em>owed to</em></td><td>House E&amp;C Committee</td></tr>
+        <tr><td>Brief HEC Subcommittee</td><td><em>concerns</em></td><td>Grant Program A</td></tr>
+        <tr><td>IRS 45X coord</td><td><em>owed to</em></td><td>Treasury / IRS</td></tr>
+        <tr><td>IRS 45X coord</td><td><em>concerns</em></td><td>Grant Program A</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted);">📌 Sample of the graph (~12 nodes, 9 edges). Production scale carries thousands of nodes across all 30 programs, all stakeholders, all authorities, all commitments. Queryable from any surface via knowledge_api.</div>
+  </div>
+</section>
+
+<!-- ============================ MOCKUPS ============================ -->
+<section class="view" id="view-mockups">
+  <h1>Dashboard mockups — draft of what production looks like</h1>
+  <p class="lede">These are draft visualizations of the dashboards your team will actually use. Sample data, real layouts, real UX patterns. Built from the same canonical state principle as the rest of the system — every surface here hydrates from one <code>blueprint-state.json</code> in production.</p>
+
+  <h2>1. Group Head Executive Dashboard</h2>
+  <p class="muted small" style="margin-top: -4px; margin-bottom: 8px;">What you open every morning. Single screen, scannable in 60 seconds.</p>
+  <div class="browser-chrome">
+    <div class="browser-dots"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
+    <div class="browser-url">🔒 blueprint-dashboard.gov/executive</div>
+  </div>
+  <div class="mockup-frame">
+    <div class="mock-header">
+      <div>
+        <div class="mock-greeting">Good morning, [Group Head]</div>
+        <div class="mock-date">Monday · May 24, 2026 · 7:32 AM ET · 6 of 30 programs need your attention</div>
+      </div>
+      <div class="classif-banner">UNCLASSIFIED // FOUO</div>
+    </div>
+
+    <div class="grid grid-4">
+      <div class="kpi"><div class="kpi-label">Programs healthy</div><div class="kpi-value">27 / 30</div><div class="kpi-sub" style="color: var(--warning)">3 flagged this week</div></div>
+      <div class="kpi"><div class="kpi-label">Active blockers</div><div class="kpi-value">4</div><div class="kpi-sub" style="color: var(--danger)">2 need your action</div></div>
+      <div class="kpi"><div class="kpi-label">Inter-agency due</div><div class="kpi-value">7</div><div class="kpi-sub">this week · 2 overdue</div></div>
+      <div class="kpi"><div class="kpi-label">Performance index</div><div class="kpi-value">0.78</div><div class="kpi-sub" style="color: var(--success)">↑ 0.04 QoQ</div></div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top: 18px;">
+      <div class="card">
+        <div class="card-title">📋 Today's briefing</div>
+        <ol style="margin: 0; padding-left: 22px; font-size: 13px;">
+          <li><strong>OMB M-26-12 released Friday</strong> — affects 8 of your 30 programs; draft response ready. <a>Open →</a></li>
+          <li><strong>House E&amp;C hearing Wed</strong> — testimony reviewed; 4 likely questions modeled. <a>Prep packet →</a></li>
+          <li><strong>Loan Guarantee Program milestone slipped</strong> — DR Energy responded with remediation plan. <a>Thread →</a></li>
+          <li><strong>3 new IPC commitments from Fri's meeting</strong> — all routed; one needs sign-off. <a>Review →</a></li>
+          <li><strong>2 programs over-delivering</strong> — practices proposed for standard kit promotion. <a>Review →</a></li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="card-title">⚖️ Decisions queued for you</div>
+        <div class="decision-item">
+          <strong>Approve $40M reprogramming for Project Cholla</strong>
+          <span>CFO recommends · 2 of 6 DRs support · due May 26</span>
+          <div><button class="mini-btn approve">Approve</button><button class="mini-btn">Send back</button><button class="mini-btn">Schedule brief</button></div>
+        </div>
+        <div class="decision-item">
+          <strong>Sign-off on OMB M-26-12 response draft</strong>
+          <span>AI Lead drafted · 8 programs implicated · due May 25</span>
+          <div><button class="mini-btn approve">Approve</button><button class="mini-btn">Send back</button></div>
+        </div>
+        <div class="decision-item">
+          <strong>Confirm 3 lighthouse program selections</strong>
+          <span>AI Lead recommends LGP, Grant-X, NewProg-A · due May 30</span>
+          <div><button class="mini-btn approve">Confirm</button><button class="mini-btn">Modify</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 18px;">
+      <div class="card-title">🗺️ Portfolio health — 30 programs</div>
+      <div class="portfolio-heatmap" id="mock-heatmap"></div>
+      <div style="margin-top: 12px; font-size: 11px; color: var(--text-muted);">
+        <span style="display: inline-block; width: 10px; height: 10px; background: #166534; border-radius: 2px; margin-right: 4px; vertical-align: middle;"></span>Green · 22 programs
+        &nbsp;&nbsp;<span style="display: inline-block; width: 10px; height: 10px; background: #B45309; border-radius: 2px; margin-right: 4px; vertical-align: middle;"></span>Amber · 5
+        &nbsp;&nbsp;<span style="display: inline-block; width: 10px; height: 10px; background: #991B1B; border-radius: 2px; margin-right: 4px; vertical-align: middle;"></span>Red · 3 (click any cell to drill into the program dashboard)
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top: 18px;">
+      <div class="card">
+        <div class="card-title">🤝 Inter-agency commitments this week</div>
+        <table>
+          <tbody>
+            <tr><td><strong>OMB</strong></td><td>Deliver M-26-12 response</td><td class="mono">May 25</td><td><span class="badge badge-medium">amber</span></td></tr>
+            <tr><td><strong>House E&amp;C</strong></td><td>Brief subcommittee</td><td class="mono">May 28</td><td><span class="badge badge-low">on track</span></td></tr>
+            <tr><td><strong>Treasury</strong></td><td>IRS coord on 45X</td><td class="mono">May 29</td><td><span class="badge badge-low">on track</span></td></tr>
+            <tr><td><strong>DOE LPO</strong></td><td>Share LGP credit memo</td><td class="mono">May 22</td><td><span class="badge badge-high">overdue</span></td></tr>
+            <tr><td><strong>NSC</strong></td><td>IPC paper input</td><td class="mono">May 30</td><td><span class="badge badge-low">on track</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">📰 External intel affecting your programs</div>
+        <ul style="margin: 0; padding-left: 22px; font-size: 13px;">
+          <li><strong>Federal Register · May 23</strong> — DOE NEPA categorical exclusion update → affects 4 programs</li>
+          <li><strong>GAO Report · May 21</strong> — Loan guarantee best practices → relevant to LGP</li>
+          <li><strong>OMB M-26-12 · May 21</strong> — Updated implementation guidance → affects 8 programs</li>
+          <li><strong>CRS Report · May 20</strong> — Tax credit transferability outlook → affects Grant-X</li>
+          <li><strong>HEC hearing transcript · May 19</strong> — Member statements on energy financing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="mockup-note">📌 Same canonical state hydrates this surface, the per-DR surface, the per-program surface, and mobile view. Refresh in ~30ms. PIV/CAC gated.</p>
+
+  <h2>2. Per-Program Dashboard — example: Loan Guarantee Program</h2>
+  <p class="muted small" style="margin-top: -4px; margin-bottom: 8px;">What every program director sees for their program. Same UX pattern as the executive view, scoped to one program.</p>
+  <div class="browser-chrome">
+    <div class="browser-dots"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
+    <div class="browser-url">🔒 blueprint-dashboard.gov/program/loan-guarantee-program</div>
+  </div>
+  <div class="mockup-frame">
+    <div class="mock-header">
+      <div>
+        <div class="mock-greeting">Loan Guarantee Program (LGP)</div>
+        <div class="mock-date">Authority: EPAct 2005 Title XVII · Program Director: [Name] · 12 FTE · Status: <span class="badge badge-medium">amber — 1 milestone slipped</span></div>
+      </div>
+      <div class="classif-banner">UNCLASSIFIED // FOUO</div>
+    </div>
+
+    <div class="grid grid-4">
+      <div class="kpi"><div class="kpi-label">Deliverables in flight</div><div class="kpi-value">8</div><div class="kpi-sub">3 due this week</div></div>
+      <div class="kpi"><div class="kpi-label">Action queue</div><div class="kpi-value">14</div><div class="kpi-sub" style="color: var(--warning)">2 past due</div></div>
+      <div class="kpi"><div class="kpi-label">$ obligated YTD</div><div class="kpi-value">$340M</div><div class="kpi-sub">68% of FY plan</div></div>
+      <div class="kpi"><div class="kpi-label">Stakeholder pulse</div><div class="kpi-value">0.82</div><div class="kpi-sub" style="color: var(--success)">↑ 0.06</div></div>
+    </div>
+
+    <h3 style="margin-top: 24px;">📦 Deliverables in flight</h3>
+    <div class="card">
+      <div class="deliv-row">
+        <div><strong>Implementing guidance update — Section 1703(a)(2)</strong><br><span class="muted small">Owner: [PM] · Due May 28</span></div>
+        <div class="progress-bar"><div class="progress-bar-fill" style="width: 75%"></div></div>
+        <div><span class="badge badge-low">on track</span></div>
+      </div>
+      <div class="deliv-row">
+        <div><strong>OMB passback response — Y26 budget submission</strong><br><span class="muted small">Owner: [CFO Liaison] · Due Jun 03</span></div>
+        <div class="progress-bar"><div class="progress-bar-fill" style="width: 40%"></div></div>
+        <div><span class="badge badge-low">on track</span></div>
+      </div>
+      <div class="deliv-row">
+        <div><strong>Application portal v2 — eligibility checker</strong><br><span class="muted small">Owner: [Eng Lead] · Due Jun 10</span></div>
+        <div class="progress-bar"><div class="progress-bar-fill" style="width: 30%; background: var(--warning)"></div></div>
+        <div><span class="badge badge-medium">slipping</span></div>
+      </div>
+      <div class="deliv-row">
+        <div><strong>Credit memo template — joint with DOE LPO</strong><br><span class="muted small">Owner: [Credit Director] · Due May 22</span></div>
+        <div class="progress-bar"><div class="progress-bar-fill" style="width: 90%; background: var(--danger)"></div></div>
+        <div><span class="badge badge-high">overdue</span></div>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top: 18px;">
+      <div class="card">
+        <div class="card-title">📰 External readthroughs (P3)</div>
+        <ul style="margin: 0; padding-left: 22px; font-size: 13px;">
+          <li><strong>GAO Report · May 21</strong> — Loan guarantee best practices [direct relevance]</li>
+          <li><strong>Federal Register · May 18</strong> — DOE NEPA cat-ex update [affects DD process]</li>
+          <li><strong>CRS Report · May 14</strong> — IRA loan program comparison [comparative analysis]</li>
+          <li><strong>HEC transcript · May 19</strong> — Member statements on LGP [4 relevant Qs]</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">🤝 Inter-agency commitments</div>
+        <table>
+          <tbody>
+            <tr><td><strong>DOE LPO</strong></td><td>Credit memo template</td><td class="mono">May 22</td><td><span class="badge badge-high">overdue</span></td></tr>
+            <tr><td><strong>OMB</strong></td><td>Y26 budget passback</td><td class="mono">Jun 03</td><td><span class="badge badge-low">on track</span></td></tr>
+            <tr><td><strong>Treasury</strong></td><td>IRS 45X coord</td><td class="mono">Jun 12</td><td><span class="badge badge-low">on track</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 18px;">
+      <div class="card-title">👥 Top stakeholders (auto-extracted from P7 knowledge graph)</div>
+      <table>
+        <tbody>
+          <tr><td><strong>Greg Beard</strong></td><td>DOE OEDF Director</td><td class="muted small">Owns 2 of your commitments</td><td class="muted small">Last touch: May 19</td></tr>
+          <tr><td><strong>OMB RMO desk officer</strong></td><td>Office of Mgmt &amp; Budget</td><td class="muted small">Reviews 4 of your products</td><td class="muted small">Last touch: May 22</td></tr>
+          <tr><td><strong>House E&amp;C Energy Subcomm</strong></td><td>Congress</td><td class="muted small">2 oversight tracks active</td><td class="muted small">Hearing May 28</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="mockup-note">📌 Wired to P1 (dashboard), P2 (action flow), P3 (external readthroughs), P7 (knowledge graph). Inherits Program-in-a-Box standard kit.</p>
+
+  <h2>3. Inter-Agency Commitments Tracker</h2>
+  <p class="muted small" style="margin-top: -4px; margin-bottom: 8px;">Every external commitment with named owner, source meeting, overdue surfacing. The bottleneck-solver.</p>
+  <div class="browser-chrome">
+    <div class="browser-dots"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
+    <div class="browser-url">🔒 blueprint-dashboard.gov/inter-agency</div>
+  </div>
+  <div class="mockup-frame">
+    <div class="mock-header">
+      <div>
+        <div class="mock-greeting">Inter-Agency Commitments</div>
+        <div class="mock-date">42 open commitments · 5 overdue · 12 due this week · across 11 counterparties</div>
+      </div>
+      <div class="classif-banner">CUI // SP-PROCURE</div>
+    </div>
+
+    <div class="filter-chips">
+      <div class="chip active">All (42)</div>
+      <div class="chip">Overdue (5)</div>
+      <div class="chip">This week (12)</div>
+      <div class="chip">OMB (8)</div>
+      <div class="chip">Congress (6)</div>
+      <div class="chip">DOE (7)</div>
+      <div class="chip">Treasury (4)</div>
+      <div class="chip">NSC (3)</div>
+      <div class="chip">Other (14)</div>
+    </div>
+
+    <table>
+      <thead><tr><th>Counterparty</th><th>Commitment</th><th>Owner (ours)</th><th>Due</th><th>Source</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><strong>DOE LPO</strong></td><td>Share LGP credit memo template</td><td>[Credit Dir]</td><td class="mono">May 22</td><td class="muted small">PCC May 15</td><td><span class="badge badge-high">overdue</span></td></tr>
+        <tr><td><strong>OMB RMO</strong></td><td>Deliver M-26-12 response</td><td>[AI Lead]</td><td class="mono">May 25</td><td class="muted small">Email May 21</td><td><span class="badge badge-medium">amber</span></td></tr>
+        <tr><td><strong>House E&amp;C</strong></td><td>Brief subcommittee on LGP</td><td>[Group Head]</td><td class="mono">May 28</td><td class="muted small">Letter May 14</td><td><span class="badge badge-low">on track</span></td></tr>
+        <tr><td><strong>Treasury IRS</strong></td><td>Coord on 45X eligibility</td><td>[Tax Counsel]</td><td class="mono">May 29</td><td class="muted small">IPC May 12</td><td><span class="badge badge-low">on track</span></td></tr>
+        <tr><td><strong>NSC</strong></td><td>IPC paper input on energy security</td><td>[Policy Dir]</td><td class="mono">May 30</td><td class="muted small">DC May 18</td><td><span class="badge badge-low">on track</span></td></tr>
+        <tr><td><strong>OMB OIRA</strong></td><td>Pre-clearance on regulatory package</td><td>[GC]</td><td class="mono">Jun 03</td><td class="muted small">LRM May 16</td><td><span class="badge badge-low">on track</span></td></tr>
+        <tr><td><strong>CEQ</strong></td><td>NEPA cat-ex justification</td><td>[Env Counsel]</td><td class="mono">Jun 05</td><td class="muted small">PCC May 17</td><td><span class="badge badge-low">on track</span></td></tr>
+        <tr><td><strong>DOE FE</strong></td><td>Joint export authorization framework</td><td>[Policy Dir]</td><td class="mono">May 19</td><td class="muted small">PCC May 08</td><td><span class="badge badge-high">overdue</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="card" style="margin-top: 18px;">
+      <div class="card-title">⚠️ 5 overdue commitments — system-recommended action</div>
+      <ul style="margin: 0; padding-left: 22px; font-size: 13px;">
+        <li><strong>DOE LPO credit memo (3d late)</strong> — drafted, awaiting Credit Director sign-off · <a>nudge owner</a></li>
+        <li><strong>DOE FE export framework (6d late)</strong> — Policy Dir traveling · <a>delegate to deputy</a></li>
+        <li><strong>EXIM working group reply (8d late)</strong> — superseded by May 18 update · <a>mark resolved</a></li>
+        <li><strong>USDA Rural coord call (12d late)</strong> — calendar conflict · <a>reschedule</a></li>
+        <li><strong>State Dept FATF input (15d late)</strong> — owner left office · <a>reassign</a></li>
+      </ul>
+    </div>
+  </div>
+  <p class="mockup-note">📌 Hydrated from the commitment graph (P7). Verbal commitments captured in meetings via P5 capture and routed via P2 universal action flow. Four-layer persistence ensures the same commitment appears here, on the program dashboard, and in the owner's action queue.</p>
+
+  <h2>4. Performance Pulse</h2>
+  <p class="muted small" style="margin-top: -4px; margin-bottom: 8px;">All 30 programs ranked weekly on leading indicators. Top performers' practices auto-extracted. Continuous, not annual.</p>
+  <div class="browser-chrome">
+    <div class="browser-dots"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
+    <div class="browser-url">🔒 blueprint-dashboard.gov/performance</div>
+  </div>
+  <div class="mockup-frame">
+    <div class="mock-header">
+      <div>
+        <div class="mock-greeting">Performance Pulse</div>
+        <div class="mock-date">Week of May 19, 2026 · 30 programs · 5 anomalies flagged · 2 best-practice proposals ready</div>
+      </div>
+      <div class="classif-banner">UNCLASSIFIED // FOUO</div>
+    </div>
+
+    <div class="grid grid-4">
+      <div class="kpi"><div class="kpi-label">Portfolio index</div><div class="kpi-value">0.78</div><div class="kpi-sub" style="color: var(--success)">↑ 0.04 QoQ</div></div>
+      <div class="kpi"><div class="kpi-label">Top quintile</div><div class="kpi-value">6</div><div class="kpi-sub">programs</div></div>
+      <div class="kpi"><div class="kpi-label">Bottom quintile</div><div class="kpi-value">5</div><div class="kpi-sub" style="color: var(--danger)">3 declining</div></div>
+      <div class="kpi"><div class="kpi-label">Anomalies</div><div class="kpi-value">5</div><div class="kpi-sub" style="color: var(--warning)">need review</div></div>
+    </div>
+
+    <h3 style="margin-top: 24px;">🥇 Top performers</h3>
+    <div class="card">
+      <div class="perf-row">
+        <div class="perf-rank top">1</div>
+        <div><strong>Grant Program A</strong><br><span class="muted small">DR: Energy · 0.94 index · cycle time -32% YoY</span></div>
+        <div><span class="badge badge-low">↑ 0.08</span></div>
+        <div class="indicator-bar"><div class="indicator-fill good" style="width: 94%"></div></div>
+        <div><button class="mini-btn">View practices</button></div>
+      </div>
+      <div class="perf-row">
+        <div class="perf-rank top">2</div>
+        <div><strong>Regulatory Track B</strong><br><span class="muted small">DR: Markets · 0.91 index · stakeholder pulse 0.88</span></div>
+        <div><span class="badge badge-low">↑ 0.05</span></div>
+        <div class="indicator-bar"><div class="indicator-fill good" style="width: 91%"></div></div>
+        <div><button class="mini-btn">View practices</button></div>
+      </div>
+      <div class="perf-row">
+        <div class="perf-rank top">3</div>
+        <div><strong>Loan Guarantee Program</strong><br><span class="muted small">DR: Energy · 0.86 index · $ deployed 68% of FY plan</span></div>
+        <div><span class="badge badge-low">↑ 0.03</span></div>
+        <div class="indicator-bar"><div class="indicator-fill good" style="width: 86%"></div></div>
+        <div><button class="mini-btn">View practices</button></div>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 24px;">⚠️ Bottom performers</h3>
+    <div class="card">
+      <div class="perf-row">
+        <div class="perf-rank bottom">28</div>
+        <div><strong>Demo Program X</strong><br><span class="muted small">DR: Innovation · 0.42 index · 4 milestones slipped this quarter</span></div>
+        <div><span class="badge badge-high">↓ 0.11</span></div>
+        <div class="indicator-bar"><div class="indicator-fill bad" style="width: 42%"></div></div>
+        <div><button class="mini-btn">Intervention</button></div>
+      </div>
+      <div class="perf-row">
+        <div class="perf-rank bottom">29</div>
+        <div><strong>Pilot Initiative Y</strong><br><span class="muted small">DR: Strategy · 0.38 index · stakeholder pulse declining</span></div>
+        <div><span class="badge badge-high">↓ 0.09</span></div>
+        <div class="indicator-bar"><div class="indicator-fill bad" style="width: 38%"></div></div>
+        <div><button class="mini-btn">Intervention</button></div>
+      </div>
+      <div class="perf-row">
+        <div class="perf-rank bottom">30</div>
+        <div><strong>Coord Office Z</strong><br><span class="muted small">DR: Operations · 0.31 index · no deliverables shipped in 6 weeks</span></div>
+        <div><span class="badge badge-high">↓ 0.14</span></div>
+        <div class="indicator-bar"><div class="indicator-fill bad" style="width: 31%"></div></div>
+        <div><button class="mini-btn">Sunset review</button></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 18px;">
+      <div class="card-title">💡 Best-practice proposals — auto-extracted from top performers</div>
+      <div class="decision-item">
+        <strong>Grant Program A's "pre-application office hours" — propose adding to Program-in-a-Box</strong>
+        <span>Reduced applicant Q&amp;A cycle 40% · zero added FTE · 3 other programs eligible to adopt</span>
+        <div><button class="mini-btn approve">Promote</button><button class="mini-btn">Pilot first</button><button class="mini-btn">Decline</button></div>
+      </div>
+      <div class="decision-item">
+        <strong>Regulatory Track B's "structured comment triage taxonomy" — propose adding to standard kit</strong>
+        <span>Cut comment review time 55% · works for any rulemaking docket &gt; 200 comments</span>
+        <div><button class="mini-btn approve">Promote</button><button class="mini-btn">Pilot first</button><button class="mini-btn">Decline</button></div>
+      </div>
+    </div>
+  </div>
+  <p class="mockup-note">📌 Wired to P6 (synthesis), P7 (knowledge graph), L6 (learning ledger). Best-practice promotions update Program-in-a-Box on quarterly cadence.</p>
+
+  <div class="flow-callout" style="margin-top: 32px;">
+    <strong>Common thread across all 4 mockups:</strong> same canonical state, same design system, same UX patterns (action queues, KPI cards, decision items, filterable tables). A user moving from executive view to program view to inter-agency tracker to performance pulse never has to relearn the interface. And every action they take in any view writes back to the canonical state — visible from every other view in the next refresh.
+  </div>
+</section>
+
+<!-- ============================ REPO LEVERAGE ============================ -->
+<section class="view" id="view-leverage-repos">
+  <h1>Repo Inventory — what's already built</h1>
+  <p class="lede">What exists in your three GitHub repos and how each blueprint capability plane reuses it. ~70% of the dashboard scaffolding is already-built code.</p>
+
+  <table>
+    <thead><tr><th>Need</th><th>Already exists</th><th>Repo</th><th>Path</th></tr></thead>
+    <tbody>
+      <tr><td>Flask dashboard server (port, cache, warmup/refresh)</td><td>✅</td><td><a href="https://github.com/ygontownik/Private-Yoni-Dashboard">Private-Yoni-Dashboard</a></td><td><code>app/cos-dashboard-server.py</code></td></tr>
+      <tr><td>HTML inject + window-global setter pattern</td><td>✅</td><td>same</td><td><code>app/templates/cos-dashboard.template.html</code></td></tr>
+      <tr><td>Multi-surface routing in one server</td><td>✅</td><td>same</td><td><code>app/templates/{cos,deal,admin,briefing,all}-dashboard.html</code></td></tr>
+      <tr><td>Design system (light/cream tokens)</td><td>✅</td><td>same</td><td><code>app/static/design-system.css</code></td></tr>
+      <tr><td>Top navigation chrome</td><td>✅</td><td>same</td><td><code>app/templates/_topnav.html</code></td></tr>
+      <tr><td>Compile pipeline → canonical JSON state</td><td>✅</td><td>same</td><td><code>cos-dashboard-refresh.py</code></td></tr>
+      <tr><td>Cache fetch / age check</td><td>✅</td><td>same</td><td><code>cos-dashboard-fetch.py</code></td></tr>
+      <tr><td>Knowledge API endpoint</td><td>✅</td><td>same</td><td><code>knowledge_api.py</code></td></tr>
+      <tr><td>Gap detector + two-signal prioritize</td><td>✅</td><td>same</td><td><code>app/lib/{gap_detector,prioritize}.py</code></td></tr>
+      <tr><td>Admin tab for routine management</td><td>✅</td><td>same</td><td><code>app/templates/admin-dashboard.html</code></td></tr>
+      <tr><td>Knowledge graph builder (P7)</td><td>✅</td><td><a href="https://github.com/ygontownik/Invite-Chief-of-Staff">Invite-Chief-of-Staff</a></td><td><code>tools/entity_graph_build.py</code></td></tr>
+      <tr><td>Knowledge indexer + query (P4)</td><td>✅</td><td>same</td><td><code>tools/{knowledge_indexer,knowledge_query}.py</code></td></tr>
+      <tr><td>Reference integrity audit + rules audit</td><td>✅</td><td>same</td><td><code>tools/{reference_integrity_audit,rules_audit}.py</code></td></tr>
+      <tr><td>Cross-reference / readthrough engine (P3)</td><td>✅</td><td>same</td><td><code>tools/cross_reference_briefing.py</code></td></tr>
+      <tr><td>System map generator</td><td>✅</td><td>same</td><td><code>tools/generate-system-map.py</code></td></tr>
+      <tr><td>Learning ledger sync</td><td>✅</td><td>same</td><td><code>tools/sync_learnings.py</code></td></tr>
+      <tr><td>Health check framework w/ auto-discovery</td><td>✅</td><td>same</td><td><code>tools/checks/</code></td></tr>
+      <tr><td>Dash state hook (P2 action flow plumbing)</td><td>✅</td><td>same</td><td><code>tools/dash-state-hook.py</code></td></tr>
+      <tr><td>File routing (P5 capture)</td><td>✅</td><td>same</td><td><code>tools/local_file_{organizer,router}.py</code></td></tr>
+      <tr><td>iMessage / GitHub / screenshot capture (P5)</td><td>✅</td><td>same</td><td><code>tools/{imessages_capture,github_watch}.py</code></td></tr>
+      <tr><td>Skill catalog generator</td><td>✅</td><td>same</td><td><code>tools/skills_catalog.py</code></td></tr>
+      <tr><td>MCP standalone setup pattern</td><td>✅</td><td>Private-Yoni-Dashboard</td><td><code>skills/mcp-standalone-setup</code></td></tr>
+      <tr><td>Owner whitelist / doc registry / alias registry</td><td>✅</td><td><a href="https://github.com/ygontownik/Private-Yoni-Config">Private-Yoni-Config</a></td><td><code>firm_context.yaml</code>, <code>drive-docs.yaml</code>, <code>known-aliases.yaml</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Net-new (what gets built)</h2>
+  <table>
+    <thead><tr><th>Component</th><th>Effort</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td><code>blueprint-state.json</code> schema</td><td>Hours</td><td>New data shape; ~12 top-level keys</td></tr>
+      <tr><td><code>blueprint-dashboard.template.html</code></td><td>Hours</td><td>Variant of cos-dashboard template with new setters</td></tr>
+      <tr><td>5–7 new surface render functions</td><td>1–2 days</td><td>Layer×Plane matrix, Roadmap Gantt, Knowledge Graph</td></tr>
+      <tr><td>Mermaid render integration</td><td>Hours</td><td>Critical path + capability flow diagrams</td></tr>
+      <tr><td><code>blueprint-refresh.py</code> compile script</td><td>Hours</td><td>Markdown + YAML → canonical JSON</td></tr>
+    </tbody>
+  </table>
+
+  <div class="flow-callout">
+    <strong>Build estimate:</strong> ~1 day for working dashboard fork with Claude Code generating the new components; +half-day for CAIO deck generator. Full step-by-step in <code>fork-plan.md</code> in this folder.
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Self-contained preview · all data embedded as <code>window.__STATE__</code> · no server, no fetch, no external data dependency · proves the canonical-state-many-surfaces principle the production blueprint prescribes
+</footer>
+
+<script>
+// ===================== EMBEDDED CANONICAL STATE =====================
+window.__STATE__ = {
+  meta: { version:"0.1.0", generated_at:"2026-05-24T12:00:00Z", agency_id:"REDACTED_AGENCY", classification:"U" },
+  org_parameters: {
+    total_fte: 400, direct_reports: 6, active_programs: 20, programs_to_stand_up: 10,
+    program_fte: 280, span_fte: 120
+  },
+  operating_layers: [
+    {id:"L1",name:"Executive Intelligence",purpose:"Daily/weekly briefings, portfolio view, escalation surface",primary_user:"Group head + 6 DRs",status:"in_design"},
+    {id:"L2",name:"Program Operations",purpose:"Per-program intake, status, decision support, deliverables",primary_user:"Program directors + teams",status:"planned"},
+    {id:"L3",name:"Span Functions",purpose:"Legal, finance, performance eval, comms automation",primary_user:"Functional staff",status:"planned"},
+    {id:"L4",name:"Cross-Program Intelligence",purpose:"Portfolio analytics, best-practice extraction, anomaly detection",primary_user:"Group head, COO",status:"planned"},
+    {id:"L5",name:"Inter-Agency Liaison",purpose:"External commitment tracking, dependency mgmt",primary_user:"Liaison leads",status:"planned"},
+    {id:"L6",name:"Performance & Learning",purpose:"Continuous program performance, institutional knowledge",primary_user:"Perf eval + program leads",status:"planned"}
+  ],
+  capability_planes: [
+    {id:"P1",name:"Live Operational Dashboard",purpose:"Single source of truth UI for every role",status:"in_design"},
+    {id:"P2",name:"Universal Action Flow",purpose:"Actions captured anywhere flow to every relevant surface",status:"in_design"},
+    {id:"P3",name:"External Intelligence Ingestion",purpose:"Continuous ingestion of policy/Congress/inter-agency/industry",status:"planned"},
+    {id:"P4",name:"Context Architecture",purpose:"CLAUDE.md hierarchy + memory + registries",status:"planned"},
+    {id:"P5",name:"Capture Surface",purpose:"Every meeting, call, email, document, public input ingested",status:"planned"},
+    {id:"P6",name:"Synthesis & Briefing",purpose:"Multi-tier briefings: per-DR, executive, per-program, portfolio",status:"planned"},
+    {id:"P7",name:"Knowledge Graph",purpose:"People/agencies/programs/authorities/commitments linked",status:"planned"}
+  ],
+  sections: [
+    {id:1,title:"Layered Operating Model Architecture (two-axis)",core_recommendation:"Design the operating model on two axes: six vertical layers (L1-L6) describing who does what work, and seven horizontal capability planes (P1-P7) describing shared infrastructure that cuts across all layers. Every layer × plane intersection is an explicit contract.",success_metric:"42 intersections documented; no layer reinvents plane infrastructure"},
+    {id:2,title:"Leverage-vs-Build Decision Matrix",core_recommendation:"Consolidated capability-by-capability decision matrix with default bias to leverage first, augment second, build last. Every build entry must answer 'why not leverage X?'",success_metric:"Zero builds without explicit leverage-justification"},
+    {id:3,title:"Org Structure for the AI Function",core_recommendation:"AI team sits matrixed with strong dotted-line to group head and solid-line under CIO/CDO; size 12-18 FTE at maturity with roles spanning platform, prompt/skill, domain liaison, governance, change, security, knowledge graph.",success_metric:"AI team fully staffed by Day 180; one domain liaison per DR area"},
+    {id:4,title:'Per-Program Standard Kit ("Program-in-a-Box")',core_recommendation:"Every program (existing and new) receives the same Claude Code kit on day one: CLAUDE.md template, standard skill set, standard pipelines, standard MCP integrations, standard dashboard surface, knowledge graph wiring. Target: live in <14 days.",success_metric:"All 20 existing programs on standard kit by Day 180; new programs <14d to live"},
+    {id:5,title:"New Program Launch Playbook",core_recommendation:"Templated four-phase launch (Pre-launch → Stand-up → Live → Anti-patterns watch). Prevents shadow tools, drift from standard kit, governance bypass.",success_metric:"10 new programs launched on standard kit by Day 365"},
+    {id:6,title:"Inter-Agency Coordination Layer",core_recommendation:"Capture every external commitment with named owner, due date, source artifact; surface stale items automatically; integrate with (don't replace) existing inter-agency forums; respect classification boundaries.",success_metric:"90% inter-agency commitment SLA adherence"},
+    {id:7,title:"Performance Intelligence System",core_recommendation:"Continuous program performance instead of annual cycles. Telemetry → best-practice extraction → standard-kit feedback loop → underperformance detection → continue/scale/restructure/sunset decision support.",success_metric:"Quarterly performance cycle replaces annual; ≥5 best-practice promotions per quarter"},
+    {id:8,title:"Span Function Automation",core_recommendation:"Per-function workflows automated: Legal (FOIA, contract review, regulatory comments), Finance (obligation tracking, justification drafting), Perf Eval (continuous data pull, evidence assembly), Operations, Communications. All wired to P1/P2/P6.",success_metric:"50% reduction in span function cycle times by Day 365"},
+    {id:9,title:"Governance & Change Management",core_recommendation:"AI governance committee, new-skill approval workflow with SLA, model/prompt change management with versioning + rollback, audit trail for IG/GAO/FOIA, workforce engagement, tiered training curriculum.",success_metric:"Every official artifact traceable; every skill versioned + rollback-able"},
+    {id:10,title:"Implementation Sequencing (12-month roadmap)",core_recommendation:"Four phases: Days 0-30 Foundations · Days 31-90 Core Build · Days 91-180 Scale · Days 181-365 Mature. Explicit go/no-go gates between phases.",success_metric:"All phase gates pass on schedule"},
+    {id:11,title:"Investment & Resources",core_recommendation:"AI team headcount build by phase + role; technology spend; contractor support; training; ATO/compliance. Order-of-magnitude total cost ~$8-12M Y1 depending on infra leverage.",success_metric:"Within ±15% of phase budget"},
+    {id:12,title:"Risk Register",core_recommendation:"Top 10 risks identified with probability × impact, mitigation owner + action, residual risk.",success_metric:"No top-3 risk realizes in Y1; all high-prob risks have active mitigation"},
+    {id:13,title:"Live Operational Dashboard Plane (P1)",core_recommendation:"Fork existing dashboard server to produce a single org-wide dashboard hosting role-specific surfaces (group-head, per-DR, per-program, per-span, portfolio, inter-agency, admin) all hydrated from one canonical blueprint-state.json on FedRAMP-cleared infra.",success_metric:"All 7 surfaces live; <50ms refresh; PIV/CAC SSO enforced"},
+    {id:14,title:"Universal Action Flow Plane (P2)",core_recommendation:"Actions extracted from any source flow through structured extraction → owner-whitelist-validated routing → tombstone-respecting compile → past-due classification → four-layer persistence.",success_metric:"Same action ID in every relevant view; zero ghost actions"},
+    {id:15,title:"External Intelligence Ingestion Plane (P3)",core_recommendation:"Continuous market/policy/inter-agency signal ingested via per-feed pipelines. Each item routed to programs whose authority/scope it touches via P7 authority graph.",success_metric:"≥10 feeds live; every active program tagged with relevant external items weekly"},
+    {id:16,title:"Context Architecture & Knowledge Graph Plane (P4 + P7)",core_recommendation:"Layered CLAUDE.md hierarchy + memory taxonomy + learning ledger + registries (owner, document, context-manifest, glossary, authority, stakeholder) + knowledge graph.",success_metric:"Every owner field resolves to registry; KG queryable from any surface"},
+    {id:17,title:"Capture Surface & Synthesis Layer (P5 + P6)",core_recommendation:"Every input ingested (meetings, calls, email, calendar, chat, docs, inter-agency artifacts, public input); every output produced from canonical state (per-DR daily, group-head executive, per-program weekly, etc.).",success_metric:"All major input modalities captured; all 7 briefing tiers running on schedule"},
+    {id:18,title:"AI-Augmented Product & Policy Design",core_recommendation:"System actively participates in crafting new programs and policy frameworks. Skills: analog-program-scan, design-option-generator, design-red-team, stakeholder-impact-simulator, draft-implementing-guidance, clearance-path-mapper.",success_metric:"50% reduction in intake-to-cleared-design time; ≥30 practice pattern entries"}
+  ],
+  roadmap: {
+    phases: [
+      {id:"P0-14",label:"Days 0–14",sublabel:"Foundations",start_day:0,end_day:14,
+        experience:"You and your 6 DRs are opening the dashboard daily. Briefings show up at 7:30am. Actions assigned in meetings appear automatically.",
+        deliverables:["ATO posture confirmed (inherit from existing FedRAMP Claude tenant)","AI team core (3-5 FTE) stood up","Governance charter published","L1 + P1 + P6 live for group head + 6 DRs (dashboard fork ~1 day with Claude)"],
+        gate:"Group head demo: live dashboard with their actions, briefings, external intel; signed acceptance",owner:"AI Lead"},
+      {id:"P15-45",label:"Days 15–45",sublabel:"Three lighthouse programs",start_day:15,end_day:45,
+        experience:"3 programs running on the standard kit. Span functions ship first quick wins. You see the lighthouse programs in your dashboard the same way you see your DRs.",
+        deliverables:["Program-in-a-Box v1","Deploy to 3 lighthouse programs","Universal action flow live","Context registries v1","Capture for meetings + email","External intelligence top 3 feeds","Span function quick wins (FOIA, contract, budget)","Inter-agency commitment tracker v1"],
+        gate:"3 lighthouse programs on standard kit with health checks passing",owner:"AI Lead"},
+      {id:"P46-90",label:"Days 46–90",sublabel:"All 20 existing programs",start_day:46,end_day:90,
+        experience:"All existing programs on the standard kit. Portfolio rollup live — you see all 20 side-by-side, ranked on health. Performance pulse runs weekly instead of annually.",
+        deliverables:["Standard kit rollout to all 20 programs","Knowledge graph operational","External intelligence full feed set","Performance intelligence layer live","Span function expansion","First net-new program launches on standard kit"],
+        gate:"All 20 programs on standard kit; performance pulse live",owner:"AI Lead"},
+      {id:"P91-180",label:"Days 91–180",sublabel:"Full maturity",start_day:91,end_day:180,
+        experience:"All 10 new programs launched on standard kit. Continuous evaluation has replaced annual cycle. Best practices feed back into the kit every quarter.",
+        deliverables:["All 10 new programs launched","Cross-program intelligence operational","Learning system feeding standard kit","Continuous evaluation displacing annual cycle","Full inter-agency coordination layer","All 7 planes hardened with health checks + SLAs"],
+        gate:"30/30 programs live; continuous eval cycle replacing annual",owner:"AI Lead"}
+    ],
+    critical_path_mermaid: "graph LR\n  classDef gate fill:#FEF3C7,stroke:#B45309,color:#1F2937\n  classDef milestone fill:#DDE9E5,stroke:#2A5A4E,color:#1F2937\n  ATO[ATO Posture]:::milestone --> Claude[FedRAMP Claude Access]:::milestone\n  Claude --> Team[AI Team Core 3-5 FTE]:::milestone\n  Team --> L1[Group Head Dashboard Live]:::gate\n  L1 --> PiB[Program-in-a-Box v1]:::milestone\n  PiB --> Lighthouse[3 Lighthouse Programs Live]:::gate\n  Lighthouse --> P7[Knowledge Graph Live]:::milestone\n  P7 --> Scale[20-Program Rollout Complete]:::gate\n  Scale --> NewProg[10 New Programs Launched]:::gate\n  NewProg --> Mature[All 7 Planes Hardened]:::milestone"
+  },
+  leverage_build_matrix: [
+    {capability:"Dashboard server",native:false,agency:"None (typical)",commercial:"Tableau Gov / Power BI Gov",recommendation:"leverage",why:"Fork cos-dashboard-server.py; preserves canonical-state design; FedRAMP path is standard Python on gov cloud"},
+    {capability:"FOIA prep",native:false,agency:"FOIAonline / agency FOIA tool",commercial:"AINS eCase FOIA",recommendation:"hybrid",why:"Keep FOIA tool as system of record; Claude Code skill adds search + redaction first-pass + reviewer queue"},
+    {capability:"Knowledge graph",native:false,agency:"None (typical)",commercial:"Neo4j / TigerGraph",recommendation:"leverage",why:"Fork entity_graph_build.py + knowledge_api.py; Postgres/SQLite fits org scale"},
+    {capability:"Action extraction",native:true,agency:"None",commercial:"Various AI summarizers",recommendation:"leverage",why:"Claude Code skill with per-pass model assignment — proven pattern"},
+    {capability:"External feed ingestion",native:false,agency:"None typically",commercial:"FiscalNote / Bloomberg Gov / Quorum",recommendation:"hybrid",why:"Use commercial feeds where they aggregate well; Claude Code readthrough engine on top"},
+    {capability:"Briefing assembly",native:true,agency:"None",commercial:"None purpose-fit",recommendation:"leverage",why:"Fork cos-personal-briefing skill; six-section memo discipline proven"},
+    {capability:"Calendar synthesis",native:false,agency:"Exchange Gov",commercial:"Various",recommendation:"hybrid",why:"Calendar stays in Exchange; Claude Code reads via Graph MCP and synthesizes"},
+    {capability:"Case management",native:false,agency:"ServiceNow / Salesforce Gov / Appian",commercial:"already procured",recommendation:"leverage",why:"Existing case mgmt stays system of record; Claude Code calls in via MCP"}
+  ],
+  pattern_inheritance: [
+    {pattern_id:"HI1",pattern_name:"Served HTML must carry all required window-global setters",reference_source:"~/cos-pipeline/tools/checks/check_served_html_inject.py",inherited_by_sections:[13],inherited_by_planes:["P1"],extension_notes:"Extended setter list for blueprint context; same enforcement"},
+    {pattern_id:"G2",pattern_name:"Schema validation on compiled dashboard rows",reference_source:"~/cos-pipeline/tools/checks/check_g2.py",inherited_by_sections:[1,4,13,14],inherited_by_planes:["P1","P2"],extension_notes:"Required fields per layer/plane defined upfront"},
+    {pattern_id:"G3",pattern_name:"Owner whitelist enforcement",reference_source:"~/cos-pipeline-config-tomac/firm_context.yaml",inherited_by_sections:[4,14,16],inherited_by_planes:["P2","P4"],extension_notes:"Registry expands to 400+ entries with role + span"},
+    {pattern_id:"AA1",pattern_name:"Tombstone id schema consistency",reference_source:"~/dashboards/data/user-state/deletions.json",inherited_by_sections:[14],inherited_by_planes:["P2"],extension_notes:"Per-artifact-type ID schemas defined upfront"},
+    {pattern_id:"EP1",pattern_name:"Edit-in-place for registered documents",reference_source:"~/cos-pipeline/tools/compile_drive_writeback.py",inherited_by_sections:[4,16,18],inherited_by_planes:["P4"],extension_notes:"Program charters, OMB submissions, decision memos all get registered IDs"},
+    {pattern_id:"U2",pattern_name:"Market commentary ↔ deal readthrough cross-check",reference_source:"~/cos-pipeline/tools/cross_reference_briefing.py",inherited_by_sections:[15,18],inherited_by_planes:["P3","P7"],extension_notes:"Readthrough engine matches external items to programs via P7 authority graph"},
+    {pattern_id:"PA1",pattern_name:"Past-due action classification at every audit",reference_source:"~/cos-pipeline/tools/checks/check_past_due_actions.py",inherited_by_sections:[14],inherited_by_planes:["P2"],extension_notes:"Prevents silent rot"},
+    {pattern_id:"NM1",pattern_name:"next_milestone_due must reference future date",reference_source:"~/cos-pipeline/tools/checks/check_next_milestone.py",inherited_by_sections:[4,7],inherited_by_planes:["P1"],extension_notes:"Per-program milestone freshness check"},
+    {pattern_id:"CF1",pattern_name:"Capture freshness — daily pipelines must run today",reference_source:"~/cos-pipeline/tools/checks/check_capture_freshness.py",inherited_by_sections:[10,17],inherited_by_planes:["P5","P6"],extension_notes:"Per-program freshness rolls up to executive layer alerting"},
+    {pattern_id:"CC1",pattern_name:"Claude Code over API",reference_source:"~/.claude/CLAUDE.md",inherited_by_sections:[2,3,9],inherited_by_planes:[],extension_notes:"All pipeline code uses Claude Code subagents/skills"},
+    {pattern_id:"LA1",pattern_name:"LaunchAgent health — all agents loaded and fresh",reference_source:"~/cos-pipeline/tools/checks/check_launchagents.py",inherited_by_sections:[10],inherited_by_planes:["P5","P6"],extension_notes:"Federal equivalent: scheduled task health monitoring"},
+    {pattern_id:"TL1/TL2",pattern_name:"Tenant-leak detection",reference_source:"~/cos-pipeline/tools/checks/check_tenant_leak.py",inherited_by_sections:[2,9],inherited_by_planes:["P4"],extension_notes:"Shared skill libraries never contain program-specific data"}
+  ],
+  knowledge_graph_seed: {
+    mermaid: "graph TD\n  classDef person fill:#DDE9E5,stroke:#2A5A4E\n  classDef agency fill:#DBEAFE,stroke:#1E40AF\n  classDef program fill:#FEF3C7,stroke:#B45309\n  classDef authority fill:#F5F1E8,stroke:#C9BFA6\n  classDef commit fill:#FEE2E2,stroke:#991B1B\n  GregBeard[Greg Beard - DOE OEDF Director]:::person\n  OMB[OMB Resource Mgmt Office]:::agency\n  Congress[House E&C Committee]:::agency\n  Prog1[Example Loan Guarantee Program]:::program\n  Prog2[Example Grant Program]:::program\n  Auth1[EPAct 2005 Title XVII]:::authority\n  Auth2[IRA Sec 50145]:::authority\n  Comm1[Deliver IG Draft to OMB - Due 2026-07-15]:::commit\n  Comm2[Brief HEC Subcommittee - Due 2026-08-01]:::commit\n  Prog1 -.implements.-> Auth1\n  Prog2 -.implements.-> Auth2\n  GregBeard -.owns.-> Prog1\n  GregBeard -.owns.-> Prog2\n  Comm1 -.owed to.-> OMB\n  Comm1 -.concerns.-> Prog1\n  Comm2 -.owed to.-> Congress\n  Comm2 -.concerns.-> Prog2"
+  },
+  risks: [
+    {id:"R-001",risk:"ATO delay blocks rollout beyond Day 30 foundations",probability:"high",impact:"high",mitigation_owner:"AI Lead + CISO",mitigation_action:"Inherit ATO from existing FedRAMP-cleared Claude tenant; pre-stage ATO package",residual:"medium"},
+    {id:"R-002",risk:"Hallucination in OMB-bound implementing guidance draft",probability:"medium",impact:"high",mitigation_owner:"Governance Lead",mitigation_action:"Mandatory human-in-the-loop review; authority-traceability-check skill enforced",residual:"low"},
+    {id:"R-003",risk:"Classification spillage in capture pipeline",probability:"low",impact:"high",mitigation_owner:"CISO",mitigation_action:"Classification-aware compile boundaries; per-feed ATO scoping",residual:"low"},
+    {id:"R-004",risk:"Inter-agency political objection to org-level AI deployment",probability:"medium",impact:"medium",mitigation_owner:"Group Head",mitigation_action:"Engage CAIO early; co-design governance with sister-agency CAIOs",residual:"medium"},
+    {id:"R-005",risk:"Vendor lock-in to Anthropic",probability:"medium",impact:"medium",mitigation_owner:"AI Lead",mitigation_action:"All skills written to standard interfaces; model assignment per-skill swappable",residual:"low"},
+    {id:"R-006",risk:"Union/workforce resistance",probability:"medium",impact:"medium",mitigation_owner:"CHCO + AI Lead",mitigation_action:"Early union briefing; explicit no-RIF commitment; opt-in pilots; training investment",residual:"low"},
+    {id:"R-007",risk:"IG/GAO scrutiny of AI use in official artifacts",probability:"high",impact:"medium",mitigation_owner:"Governance Lead",mitigation_action:"Full audit trail; every invocation logged; quote-and-cite policy; HITL on official outputs",residual:"low"},
+    {id:"R-008",risk:"Funding cliff at FY boundary",probability:"medium",impact:"high",mitigation_owner:"CFO + Group Head",mitigation_action:"Multi-year procurement vehicle; appropriations narrative built into Y1",residual:"medium"},
+    {id:"R-009",risk:"Model regression breaks established workflows",probability:"medium",impact:"medium",mitigation_owner:"AI Lead",mitigation_action:"Skill versioning + rollback; regression test suite per skill on model upgrade",residual:"low"},
+    {id:"R-010",risk:"Adoption — people don't use the system",probability:"medium",impact:"high",mitigation_owner:"Change Lead",mitigation_action:"Tiered training; champion network per DR area; usage telemetry surfaced to leadership weekly",residual:"medium"}
+  ],
+  open_questions: [
+    {id:"Q-001",question:"Which FedRAMP gov cloud is the target host (AWS GovCloud / Azure Gov / Google Assured Workloads)?",owner:"CIO + AI Lead",status:"open",due_date:"2026-06-15",section_refs:[10,13]},
+    {id:"Q-002",question:"Which 3 programs are the lighthouse candidates (Days 31-90)?",owner:"Group Head",status:"open",due_date:"2026-06-30",section_refs:[10]},
+    {id:"Q-003",question:"What's the agency CAIO posture on Claude/Anthropic specifically?",owner:"AI Lead",status:"open",due_date:"2026-06-07",section_refs:[2,9]},
+    {id:"Q-004",question:"Does an existing FedRAMP-cleared Claude tenant exist that we can inherit from?",owner:"CISO",status:"in_progress",due_date:"2026-06-01",section_refs:[10,11]},
+    {id:"Q-005",question:"What classification levels do we need to operate at (U / CUI / S / TS)?",owner:"CISO + Group Head",status:"open",due_date:"2026-06-15",section_refs:[9,17]},
+    {id:"Q-006",question:"Is the AI team org-positioned under CIO, CDO, direct to Group Head, or matrixed?",owner:"Group Head",status:"open",due_date:"2026-06-30",section_refs:[3]},
+    {id:"Q-007",question:"Which existing case mgmt / DM / FOIA tools are we leveraging via MCP?",owner:"CIO + AI Lead",status:"open",due_date:"2026-07-15",section_refs:[2,8]},
+    {id:"Q-008",question:"Union MOU on AI deployment — what cadence + scope?",owner:"CHCO",status:"open",due_date:"2026-07-15",section_refs:[9]}
+  ],
+  actions: [
+    {action_id:"a1b2c3d4",verb:"Confirm ATO posture with CISO and document inheritance path",owner:"AI Lead",due:"2026-06-07",priority:"high",routing:"L1 / Admin",status:"open"},
+    {action_id:"e5f6g7h8",verb:"Identify 3 lighthouse programs for Days 31-90 deployment",owner:"Group Head",due:"2026-06-30",priority:"high",routing:"L1 / Executive",status:"open"},
+    {action_id:"i9j0k1l2",verb:"Engage agency CAIO for AI governance alignment",owner:"AI Lead",due:"2026-06-15",priority:"high",routing:"L1 / Executive · L5 / Inter-Agency",status:"open"},
+    {action_id:"m3n4o5p6",verb:"Draft Program-in-a-Box CLAUDE.md template",owner:"AI Lead",due:"2026-07-15",priority:"medium",routing:"L2 / Program Ops",status:"open"},
+    {action_id:"q7r8s9t0",verb:"Procure FedRAMP-cleared Claude tenant",owner:"CIO + Procurement",due:"2026-06-30",priority:"high",routing:"L1 / Admin",status:"in_progress"},
+    {action_id:"u1v2w3x4",verb:"Brief unions on AI deployment plan and MOU scope",owner:"CHCO",due:"2026-07-15",priority:"medium",routing:"L3 / Span Function",status:"open"},
+    {action_id:"y5z6a7b8",verb:"Map 6 DR personas and span-specific CLAUDE.md needs",owner:"AI Lead",due:"2026-06-30",priority:"high",routing:"L1 / Executive",status:"open"},
+    {action_id:"c9d0e1f2",verb:"Inventory existing AI initiatives across agency for leverage",owner:"AI Lead",due:"2026-07-01",priority:"medium",routing:"L4 / Cross-Program",status:"open"}
+  ]
+};
+
+// ===================== HEADER =====================
+const S = window.__STATE__;
+document.getElementById('m-fte').textContent = S.org_parameters.total_fte;
+document.getElementById('m-progs').textContent = S.org_parameters.active_programs + S.org_parameters.programs_to_stand_up;
+document.getElementById('m-drs').textContent = S.org_parameters.direct_reports;
+document.getElementById('m-compiled').textContent = new Date(S.meta.generated_at).toLocaleDateString();
+
+// ===================== TABS =====================
+const tabs = document.querySelectorAll('.tab');
+const views = document.querySelectorAll('.view');
+function showView(name) {
+  tabs.forEach(t => t.classList.toggle('active', t.dataset.view === name));
+  views.forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+window.showView = showView;
+tabs.forEach(t => t.addEventListener('click', () => showView(t.dataset.view)));
+
+// ===================== EXECUTIVE SUMMARY =====================
+const kpis = [
+  { label: "Total FTE", value: S.org_parameters.total_fte, sub: "across programs + span" },
+  { label: "Active programs", value: S.org_parameters.active_programs, sub: "currently running" },
+  { label: "New to launch", value: S.org_parameters.programs_to_stand_up, sub: "over 12–18 months" },
+  { label: "Direct reports", value: S.org_parameters.direct_reports, sub: "to group head" }
+];
+document.getElementById('exec-kpis').innerHTML = kpis.map(k => `
+  <div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-value">${k.value}</div><div class="kpi-sub">${k.sub}</div></div>
+`).join('');
+
+document.getElementById('exec-layers').innerHTML = `<table>${S.operating_layers.map(l => `
+  <tr><td style="width:50px"><code>${l.id}</code></td><td><strong>${l.name}</strong><br><span class="muted small">${l.primary_user}</span></td><td style="width:90px"><span class="badge badge-${l.status}">${l.status.replace('_',' ')}</span></td></tr>
+`).join('')}</table>`;
+
+document.getElementById('exec-planes').innerHTML = `<table>${S.capability_planes.map(p => `
+  <tr><td style="width:50px"><code>${p.id}</code></td><td><strong>${p.name}</strong><br><span class="muted small">${p.purpose}</span></td><td style="width:90px"><span class="badge badge-${p.status}">${p.status.replace('_',' ')}</span></td></tr>
+`).join('')}</table>`;
+
+document.getElementById('exec-risks').innerHTML = `<table><thead><tr><th>ID</th><th>Risk</th><th>P×I</th><th>Mitigation owner</th></tr></thead><tbody>${S.risks.slice(0,5).map(r => `
+  <tr><td><code>${r.id}</code></td><td>${r.risk}</td><td><span class="badge badge-${r.probability}">${r.probability}</span> × <span class="badge badge-${r.impact}">${r.impact}</span></td><td>${r.mitigation_owner}</td></tr>
+`).join('')}</tbody></table>`;
+
+document.getElementById('exec-openq').innerHTML = `<table><thead><tr><th>ID</th><th>Question</th><th>Owner</th><th>Due</th></tr></thead><tbody>${S.open_questions.slice(0,5).map(q => `
+  <tr><td><code>${q.id}</code></td><td>${q.question}</td><td>${q.owner}</td><td class="mono small">${q.due_date}</td></tr>
+`).join('')}</tbody></table>`;
+
+document.getElementById('exec-actions').innerHTML = `<table><thead><tr><th>ID</th><th>Action</th><th>Owner</th><th>Due</th><th>Priority</th></tr></thead><tbody>${S.actions.filter(a => a.priority === 'high').slice(0,5).map(a => `
+  <tr><td><code>${a.action_id}</code></td><td>${a.verb}</td><td>${a.owner}</td><td class="mono small">${a.due}</td><td><span class="badge badge-${a.priority}">${a.priority}</span></td></tr>
+`).join('')}</tbody></table>`;
+
+// ===================== LAYER × PLANE MATRIX =====================
+const grid = document.getElementById('lpm-grid');
+let html = '<div class="lpm-cell lpm-header"></div>';
+S.capability_planes.forEach(p => {
+  html += `<div class="lpm-cell lpm-header" title="${p.purpose}"><div><div class="lpm-cell-id">${p.id}</div><div style="font-size:10px;margin-top:2px">${p.name.split(' ').slice(0,2).join(' ')}</div></div></div>`;
+});
+const cellMap = {
+  "L1×P1":"Executive surface, hydrated from canonical state","L1×P2":"Top action queue per DR","L1×P3":"External intel digest","L1×P4":"DR-span CLAUDE.md","L1×P5":"Principal meetings + email","L1×P6":"Daily executive briefing","L1×P7":"Top stakeholder/program view",
+  "L2×P1":"Per-program dashboard","L2×P2":"Program action register","L2×P3":"Program readthroughs","L2×P4":"Program CLAUDE.md + charter","L2×P5":"Program meetings, email, docs","L2×P6":"Weekly program status","L2×P7":"Program graph entry",
+  "L3×P1":"Span function queue","L3×P2":"Function-routed actions","L3×P3":"Function-relevant feeds","L3×P4":"Function skill library","L3×P5":"Function inbox + tickets","L3×P6":"Function pulse","L3×P7":"Function stakeholder view",
+  "L4×P1":"Portfolio rollup","L4×P2":"Cross-program analytics","L4×P3":"Cross-program readthroughs","L4×P4":"Portfolio CLAUDE.md","L4×P5":"Cross-program telemetry","L4×P6":"Quarterly portfolio review","L4×P7":"Full portfolio graph",
+  "L5×P1":"Commitments tracker","L5×P2":"Inter-agency action register","L5×P3":"Inter-agency artifacts","L5×P4":"Liaison CLAUDE.md","L5×P5":"PCC/DC/IPC readouts","L5×P6":"Inter-agency digest","L5×P7":"Commitment graph",
+  "L6×P1":"Performance pulse","L6×P2":"Performance actions","L6×P3":"Outcome benchmarking","L6×P4":"Learning ledger + practice patterns","L6×P5":"Performance telemetry","L6×P6":"Performance reports","L6×P7":"Outcome → program → authority graph"
+};
+S.operating_layers.forEach(l => {
+  html += `<div class="lpm-cell lpm-row-header" title="${l.purpose}"><strong>${l.id}</strong><span>${l.name}</span></div>`;
+  S.capability_planes.forEach(p => {
+    const t = cellMap[l.id + '×' + p.id] || '—';
+    html += `<div class="lpm-cell" title="${l.name} × ${p.name}"><div class="lpm-cell-id">${l.id}×${p.id}</div><div class="lpm-cell-text">${t}</div></div>`;
+  });
+});
+grid.innerHTML = html;
+
+// ===================== SECTION BROWSER =====================
+const sectionNav = document.getElementById('section-nav');
+const sectionDetail = document.getElementById('section-detail');
+sectionNav.innerHTML = S.sections.map(s => `
+  <a class="section-nav-item" data-section="${s.id}"><span class="sn-num">${String(s.id).padStart(2,'0')}</span>${s.title}</a>
+`).join('');
+
+function renderSection(id) {
+  const s = S.sections.find(x => x.id === id);
+  if (!s) return;
+  const inheritedPatterns = S.pattern_inheritance.filter(p => p.inherited_by_sections.includes(id));
+  const sectionQs = S.open_questions.filter(q => q.section_refs && q.section_refs.includes(id));
+  sectionDetail.innerHTML = `
+    <h4>Section ${String(s.id).padStart(2,'0')}</h4>
+    <h1 style="font-size: 20px;">${s.title}</h1>
+    <h4>The Core Recommendation</h4>
+    <p>${s.core_recommendation}</p>
+    ${inheritedPatterns.length ? `<h4>Patterns inherited</h4><ul>${inheritedPatterns.map(p => `<li><strong>${p.pattern_id}</strong> — ${p.pattern_name}<br><span class="muted small">Source: <code>${p.reference_source}</code></span></li>`).join('')}</ul>` : ''}
+    ${sectionQs.length ? `<h4>Open Questions</h4><ul>${sectionQs.map(q => `<li><code>${q.id}</code> — ${q.question} <span class="muted small">(${q.owner}, due ${q.due_date})</span></li>`).join('')}</ul>` : ''}
+    <h4>Success Metric</h4>
+    <p>${s.success_metric}</p>
+  `;
+  document.querySelectorAll('.section-nav-item').forEach(el => el.classList.toggle('active', +el.dataset.section === id));
+}
+document.querySelectorAll('.section-nav-item').forEach(el => {
+  el.addEventListener('click', () => renderSection(+el.dataset.section));
+});
+renderSection(1);
+
+// ===================== ROADMAP =====================
+const totalDays = 180;
+document.getElementById('roadmap-bars').innerHTML = S.roadmap.phases.map(ph => {
+  const left = (ph.start_day / totalDays) * 100;
+  const width = ((ph.end_day - ph.start_day) / totalDays) * 100;
+  return `
+    <div class="phase-row">
+      <div class="phase-label">${ph.label}<small>${ph.sublabel}</small></div>
+      <div class="phase-bar-track">
+        <div class="phase-bar-fill" style="left:${left}%;width:${width}%"></div>
+        <div class="phase-bar-label" style="padding-left: ${left + 1}%">${ph.deliverables.length} deliverables · gate at ${ph.end_day}d</div>
+      </div>
+      <div class="phase-days">${ph.start_day}-${ph.end_day}d</div>
+    </div>
+  `;
+}).join('');
+
+document.getElementById('roadmap-cards').innerHTML = S.roadmap.phases.map(ph => `
+  <div class="phase-card">
+    <div class="phase-card-head"><h3>${ph.label} · ${ph.sublabel}</h3><span class="phase-sub">Owner: ${ph.owner}</span></div>
+    <div class="phase-experience"><strong>What you experience:</strong> ${ph.experience}</div>
+    <div class="phase-deliverables"><strong>Deliverables</strong><ul>${ph.deliverables.map(d => `<li>${d}</li>`).join('')}</ul></div>
+    <div style="margin-top: 10px; font-size: 13px;"><strong style="color: var(--warning);">Go/No-Go Gate:</strong> ${ph.gate}</div>
+  </div>
+`).join('');
+
+document.getElementById('mermaid-critical-src').textContent = S.roadmap.critical_path_mermaid;
+
+// ===================== LEVERAGE vs BUILD =====================
+document.getElementById('leverage-rows').innerHTML = S.leverage_build_matrix.map(r => `
+  <tr><td><strong>${r.capability}</strong></td><td>${r.native ? '✅' : '—'}</td><td>${r.agency}</td><td>${r.commercial}</td><td><span class="badge badge-${r.recommendation}">${r.recommendation}</span></td><td class="muted small">${r.why}</td></tr>
+`).join('');
+
+// ===================== RISKS =====================
+document.getElementById('risk-rows').innerHTML = S.risks.map(r => `
+  <tr><td><code>${r.id}</code></td><td>${r.risk}</td><td><span class="badge badge-${r.probability}">${r.probability}</span></td><td><span class="badge badge-${r.impact}">${r.impact}</span></td><td>${r.mitigation_owner}</td><td class="muted small">${r.mitigation_action}</td><td><span class="badge badge-${r.residual}">${r.residual}</span></td></tr>
+`).join('');
+
+// ===================== OPEN QUESTIONS =====================
+document.getElementById('openq-rows').innerHTML = S.open_questions.map(q => `
+  <tr><td><code>${q.id}</code></td><td>${q.question}</td><td>${q.owner}</td><td><span class="badge badge-${q.status === 'open' ? 'planned' : 'in_design'}">${q.status.replace('_',' ')}</span></td><td class="mono small">${q.due_date}</td><td class="muted small">${(q.section_refs || []).map(s => '§' + s).join(', ')}</td></tr>
+`).join('');
+
+// ===================== ACTIONS =====================
+document.getElementById('action-rows').innerHTML = S.actions.map(a => `
+  <tr><td><code>${a.action_id}</code></td><td>${a.verb}</td><td>${a.owner}</td><td class="mono small">${a.due}</td><td><span class="badge badge-${a.priority}">${a.priority}</span></td><td class="muted small">${a.routing}</td><td><span class="badge badge-${a.status === 'open' ? 'planned' : 'in_design'}">${a.status.replace('_',' ')}</span></td></tr>
+`).join('');
+
+// ===================== PATTERN INHERITANCE =====================
+document.getElementById('pattern-rows').innerHTML = S.pattern_inheritance.map(p => `
+  <tr><td><code>${p.pattern_id}</code></td><td><strong>${p.pattern_name}</strong></td><td><code class="small">${p.reference_source}</code></td><td class="small">${p.inherited_by_sections.map(s => '§' + s).join(', ')}</td><td class="small">${p.inherited_by_planes.join(', ') || '—'}</td><td class="muted small">${p.extension_notes}</td></tr>
+`).join('');
+
+// ===================== KNOWLEDGE GRAPH =====================
+document.getElementById('mermaid-graph-src').textContent = S.knowledge_graph_seed.mermaid;
+
+// ===================== MOCKUP HEATMAP =====================
+const heatPattern = ['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','a','a','a','a','a','r','r','r'];
+const heatEl = document.getElementById('mock-heatmap');
+if (heatEl) {
+  heatEl.innerHTML = heatPattern.map((c, i) => {
+    const cls = c === 'g' ? 'heat-green' : c === 'a' ? 'heat-amber' : 'heat-red';
+    return `<div class="heat-cell ${cls}" title="Program ${i+1}">${i+1}</div>`;
+  }).join('');
+}
+
+// (Mermaid removed — diagrams now hand-coded HTML/CSS for zero-dependency offline use)
+</script>
+
+</body>
+</html>
