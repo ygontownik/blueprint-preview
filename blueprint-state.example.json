@@ -1,0 +1,752 @@
+{
+  "meta": {
+    "version": "0.1.0",
+    "generated_at": "2026-05-24T12:00:00Z",
+    "agency_id": "REDACTED_AGENCY",
+    "classification": "U",
+    "compile_source": "git@github.com:agency/blueprint-source.git@main",
+    "served_html_contract_required_setters": [
+      "__BLUEPRINT_META__",
+      "__LAYERS__",
+      "__PLANES__",
+      "__SECTIONS__",
+      "__ROADMAP__",
+      "__LEVERAGE_BUILD__",
+      "__RISKS__",
+      "__OPEN_QUESTIONS__",
+      "__ACTIONS__",
+      "__OWNER_WHITELIST__",
+      "__EXTERNAL_INTEL__",
+      "__PEER_LEARNINGS__",
+      "__BEST_PRACTICES__",
+      "__SYNTHESIS__",
+      "__ROLE_TIER__"
+    ]
+  },
+  "org_parameters": {
+    "total_fte": 400,
+    "direct_reports": 6,
+    "active_programs": 20,
+    "programs_to_stand_up": 10,
+    "program_fte": 280,
+    "span_fte": 120,
+    "primary_work": "Policy design + new program stand-up",
+    "change_mechanism": "Inter-agency liaison",
+    "mission_heterogeneity": "high"
+  },
+  "operating_layers": [
+    {
+      "id": "L1",
+      "name": "Executive Intelligence",
+      "purpose": "Daily/weekly briefings, portfolio view, escalation surface for the group head and 6 DRs",
+      "primary_user": "Group head + 6 DRs",
+      "claude_code_surface": "Per-role CLAUDE.md, briefing pipelines, executive dashboard",
+      "owner": "AI Lead",
+      "status": "in_design",
+      "workflows": ["daily-exec-briefing", "weekly-portfolio-rollup", "escalation-routing"],
+      "integrations_required": ["P1", "P2", "P3", "P6"],
+      "leveraged_from_existing": ["cos-dashboard-server.py", "briefing pipeline pattern"],
+      "net_new_components": ["DR-span filtering", "classification-aware compile"],
+      "kpis": [
+        {"name": "Briefing freshness", "target": "Delivered by 07:30 daily", "trend": "unknown", "measurement_cadence": "daily"}
+      ]
+    },
+    {
+      "id": "L2",
+      "name": "Program Operations",
+      "purpose": "Per-program intake, status, decision support, deliverable production",
+      "primary_user": "Program directors + teams",
+      "claude_code_surface": "Per-program skill packs, hooks, scheduled jobs, Program-in-a-Box",
+      "owner": "AI Lead + Program Directors",
+      "status": "planned"
+    },
+    {
+      "id": "L3",
+      "name": "Span Functions",
+      "purpose": "Legal, finance, performance eval, comms automation",
+      "primary_user": "Functional staff",
+      "claude_code_surface": "Domain skill libraries + MCP servers",
+      "owner": "GC / CFO / Eval Director / Comms Director",
+      "status": "planned"
+    },
+    {
+      "id": "L4",
+      "name": "Cross-Program Intelligence",
+      "purpose": "Portfolio analytics, best-practice extraction, anomaly detection",
+      "primary_user": "Group head, COO equivalent",
+      "claude_code_surface": "Aggregation pipelines + analytics layer",
+      "owner": "AI Lead",
+      "status": "planned"
+    },
+    {
+      "id": "L5",
+      "name": "Inter-Agency Liaison",
+      "purpose": "External commitment tracking, dependency mgmt, joint product workflow",
+      "primary_user": "Liaison leads",
+      "claude_code_surface": "Shared workspaces + commitment tracker",
+      "owner": "Inter-Agency Lead",
+      "status": "planned"
+    },
+    {
+      "id": "L6",
+      "name": "Performance & Learning",
+      "purpose": "Continuous program performance, institutional knowledge capture, learning ledger",
+      "primary_user": "Perf eval + program leads",
+      "claude_code_surface": "Telemetry, evidence vault, learning ledger",
+      "owner": "Performance Eval Director",
+      "status": "planned"
+    }
+  ],
+  "capability_planes": [
+    {
+      "id": "P1",
+      "name": "Live Operational Dashboard",
+      "purpose": "Single source of truth UI for every role, hydrated from compiled state",
+      "reference_pattern": "Localhost:7777 dashboard server + cache + HTML inject + window-global setters (HI1)",
+      "owner": "AI Lead",
+      "status": "in_design",
+      "shared_infrastructure": "Fork of cos-dashboard-server.py on FedRAMP-cleared infra",
+      "consumed_by_layers": ["L1", "L2", "L3", "L4", "L5", "L6"],
+      "contributes_to_layers": [],
+      "kpis": [
+        {"name": "Refresh latency", "target": "<50ms", "trend": "unknown", "measurement_cadence": "continuous"},
+        {"name": "Served-HTML contract check", "target": "100% setters present", "trend": "unknown", "measurement_cadence": "per deploy"}
+      ]
+    },
+    {
+      "id": "P2",
+      "name": "Universal Action Flow",
+      "purpose": "Actions captured anywhere flow to every relevant surface with the same ID",
+      "reference_pattern": "Four-layer persistence + owner whitelist (G3) + tombstone discipline (AA1) + past-due classification (PA1)",
+      "owner": "AI Lead",
+      "status": "in_design",
+      "shared_infrastructure": "Fork of dash-state-hook.py + intel_capture.py",
+      "consumed_by_layers": ["L1", "L2", "L3", "L5"],
+      "contributes_to_layers": ["L1", "L2", "L3", "L5", "L6"]
+    },
+    {
+      "id": "P3",
+      "name": "External Intelligence Ingestion",
+      "purpose": "Continuous ingestion of policy, congressional, inter-agency, industry, foreign signal",
+      "reference_pattern": "Podcast / research pipelines + readthrough cross-referencing (U2)",
+      "owner": "External Intel Lead",
+      "status": "planned",
+      "shared_infrastructure": "Fork of cross_reference_briefing.py + new feed ingestors"
+    },
+    {
+      "id": "P4",
+      "name": "Context Architecture",
+      "purpose": "Layered CLAUDE.md hierarchy + memory taxonomy + registries = highest-quality recall",
+      "reference_pattern": "CLAUDE.md global/project + learning ledger + drive-docs.yaml + firm_context.yaml + CONTEXT-MANIFEST.yaml",
+      "owner": "AI Lead + Knowledge Mgmt",
+      "status": "planned",
+      "shared_infrastructure": "Fork of knowledge_indexer.py / knowledge_query.py / sync_learnings.py"
+    },
+    {
+      "id": "P5",
+      "name": "Capture Surface",
+      "purpose": "Every meeting, call, email, document, public input ingested",
+      "reference_pattern": "Otter + call recorder + Gmail Mini + calendar + file router",
+      "owner": "Capture Engineering Lead",
+      "status": "planned",
+      "shared_infrastructure": "Fork of local_file_organizer.py + imessages_capture.py + Gmail Mini pattern"
+    },
+    {
+      "id": "P6",
+      "name": "Synthesis & Briefing",
+      "purpose": "Multi-tier briefings: per-DR, executive, per-program, portfolio, external",
+      "reference_pattern": "Daily/weekly briefings + six-section memo standard",
+      "owner": "AI Lead",
+      "status": "planned",
+      "shared_infrastructure": "Fork of cos-personal-briefing skill + briefing routine"
+    },
+    {
+      "id": "P7",
+      "name": "Knowledge Graph",
+      "purpose": "People / agencies / programs / authorities / commitments / outputs linked, queryable from any surface",
+      "reference_pattern": "People CRM + deal counterparties + alias directory + practice patterns",
+      "owner": "Knowledge Graph Engineer",
+      "status": "planned",
+      "shared_infrastructure": "Fork of entity_graph_build.py + knowledge_api.py"
+    }
+  ],
+  "layer_plane_matrix": [
+    {
+      "layer_id": "L1",
+      "plane_id": "P1",
+      "data_in": "Compiled state JSON (sections + actions + risks)",
+      "data_out": "Hydrated executive surface; click-through to drill-down views",
+      "shared_state": "blueprint-state.json",
+      "shared_registry": "owner_whitelist"
+    },
+    {
+      "layer_id": "L2",
+      "plane_id": "P2",
+      "data_in": "Actions extracted from meetings/email/docs",
+      "data_out": "Per-program action queue surfaced on program dashboard",
+      "shared_state": "actions[]",
+      "shared_registry": "owner_whitelist + program registry"
+    }
+  ],
+  "sections": [
+    {
+      "id": 13,
+      "title": "Live Operational Dashboard Plane (P1)",
+      "core_recommendation": "Fork ~/dashboards/app/cos-dashboard-server.py to produce a single org-wide dashboard server hosting role-specific surfaces (group-head, per-DR, per-program, per-span, portfolio, inter-agency, admin) all hydrated from one canonical blueprint-state.json on FedRAMP-cleared infra. Inherit HI1 served-HTML contract check; extend with PIV/CAC role-gated data masking at compile time.",
+      "design_detail": "See Section 13 in the master prompt output. This example stub is a placeholder.",
+      "leverage_build_calls": [
+        {"item": "Flask dashboard server", "decision": "leverage", "reference_pattern_inherited": "cos-dashboard-server.py", "capability_plane_consumed": "P1", "why": "Already production-tested at 2-person scale; same Flask pattern scales to FedRAMP gov cloud"},
+        {"item": "HTML inject + window-global setters", "decision": "leverage", "reference_pattern_inherited": "HI1", "capability_plane_consumed": "P1", "why": "Served-HTML contract check already proven to catch regression"},
+        {"item": "Role-based data masking", "decision": "build", "reference_pattern_inherited": "N/A (extension)", "capability_plane_consumed": "P1", "why": "Federal classification + DR-span filtering not in reference"},
+        {"item": "PIV/CAC SSO gating", "decision": "procure", "reference_pattern_inherited": "N/A", "capability_plane_consumed": "P1", "why": "Standard agency SSO; reuse existing tenant"}
+      ],
+      "open_questions": [
+        {"id": "Q13-01", "question": "Which FedRAMP gov cloud is the target host (AWS GovCloud, Azure Gov, Google Assured Workloads)?"}
+      ],
+      "dependencies": ["Section 4 (Program-in-a-Box surface)", "Section 9 (governance — role-mask policy)"],
+      "success_metric": "All 7 surfaces live; <50ms refresh; 100% served-HTML contract pass; PIV/CAC SSO enforced",
+      "owner": "AI Lead",
+      "linked_actions": ["A-13-001", "A-13-002"]
+    }
+  ],
+  "roadmap": {
+    "phases": [
+      {
+        "id": "P0-30",
+        "label": "Days 0-30 — Foundations",
+        "start_day": 0,
+        "end_day": 30,
+        "deliverables": [
+          "ATO posture confirmed",
+          "FedRAMP-cleared Claude access procured",
+          "AI team core (3-5 FTE) stood up",
+          "Governance charter published",
+          "L1 + P1 + P6 live for group head + 6 DRs"
+        ],
+        "gate": "Group head demo: live dashboard with their actions, briefings, external intelligence; signed acceptance",
+        "owner": "AI Lead",
+        "depends_on": [],
+        "success_metric": "Group head uses the dashboard daily by Day 30"
+      },
+      {
+        "id": "P31-90",
+        "label": "Days 31-90 — Core Build",
+        "start_day": 31,
+        "end_day": 90,
+        "deliverables": [
+          "Program-in-a-Box v1",
+          "Deploy to 3 lighthouse programs",
+          "P2 action flow live across L1/L2",
+          "P4 context registries v1",
+          "P5 capture for meetings + email",
+          "P3 ingestion for top 3 external feeds",
+          "Span function quick wins (FOIA, contract review, budget tracking)",
+          "Inter-agency commitment tracker v1"
+        ],
+        "gate": "3 lighthouse programs on standard kit with health checks passing",
+        "owner": "AI Lead",
+        "depends_on": ["P0-30"],
+        "success_metric": "3 programs live; action-throughput baseline established"
+      }
+    ],
+    "critical_path_mermaid": "graph LR\n  ATO[ATO Posture] --> Claude[FedRAMP Claude Access]\n  Claude --> Team[AI Team Core]\n  Team --> L1[L1+P1+P6 Live]\n  L1 --> PiB[Program-in-a-Box v1]\n  PiB --> Lighthouse[3 Lighthouse Programs]\n  Lighthouse --> Scale[20-Program Rollout]\n  Scale --> NewProg[10 New Programs Launch]"
+  },
+  "leverage_build_matrix": [
+    {
+      "capability": "Dashboard server",
+      "native_to_claude_code": false,
+      "existing_agency_system": "None (typical)",
+      "commercial_option": "Tableau Gov, Power BI Gov",
+      "recommendation": "leverage",
+      "why": "Fork cos-dashboard-server.py; preserves design principle of canonical-state-multi-surface; FedRAMP path is standard Python on gov cloud",
+      "owner": "AI Lead",
+      "section_refs": [13]
+    },
+    {
+      "capability": "FOIA prep",
+      "native_to_claude_code": false,
+      "existing_agency_system": "FOIAonline / agency FOIA tool",
+      "commercial_option": "AINS eCase FOIA",
+      "recommendation": "hybrid",
+      "why": "Existing FOIA tool stays as system of record; Claude Code skill provides search + redaction first-pass + reviewer queue on top",
+      "owner": "GC",
+      "section_refs": [8]
+    },
+    {
+      "capability": "Knowledge graph",
+      "native_to_claude_code": false,
+      "existing_agency_system": "None (typical)",
+      "commercial_option": "Neo4j, TigerGraph, Stardog",
+      "recommendation": "leverage",
+      "why": "Fork entity_graph_build.py + knowledge_api.py; graph fits in Postgres/SQLite for org scale; commercial only if query patterns demand it",
+      "owner": "Knowledge Graph Engineer",
+      "section_refs": [16]
+    }
+  ],
+  "pattern_inheritance": [
+    {
+      "pattern_id": "HI1",
+      "pattern_name": "Served HTML must carry all required window-global setters",
+      "reference_source": "~/cos-pipeline/tools/checks/check_served_html_inject.py",
+      "inherited_by_sections": [13],
+      "inherited_by_planes": ["P1"],
+      "extension_notes": "Extended setter list for blueprint context; same enforcement mechanism"
+    },
+    {
+      "pattern_id": "G2",
+      "pattern_name": "Schema validation on compiled dashboard rows",
+      "reference_source": "~/cos-pipeline/tools/checks/check_g2.py",
+      "inherited_by_sections": [1, 4, 13, 14],
+      "inherited_by_planes": ["P1", "P2"],
+      "extension_notes": "Required fields per layer/plane defined upfront; missing-field check at every compile"
+    },
+    {
+      "pattern_id": "G3",
+      "pattern_name": "Owner whitelist enforcement",
+      "reference_source": "~/cos-pipeline-config-tomac/firm_context.yaml",
+      "inherited_by_sections": [4, 14, 16],
+      "inherited_by_planes": ["P2", "P4"],
+      "extension_notes": "Owner registry expands to 400+ entries with role + span; aliases resolved automatically"
+    },
+    {
+      "pattern_id": "AA1",
+      "pattern_name": "Tombstone id schema consistency",
+      "reference_source": "~/dashboards/data/user-state/deletions.json",
+      "inherited_by_sections": [14],
+      "inherited_by_planes": ["P2"],
+      "extension_notes": "Per-artifact-type ID schemas defined; same 8-hex-char + djb2 split"
+    },
+    {
+      "pattern_id": "EP1",
+      "pattern_name": "Edit-in-place for registered documents",
+      "reference_source": "~/cos-pipeline/tools/compile_drive_writeback.py",
+      "inherited_by_sections": [4, 16, 18],
+      "inherited_by_planes": ["P4"],
+      "extension_notes": "Program charters, OMB submissions, decision memos all get registered IDs from day one"
+    },
+    {
+      "pattern_id": "U2",
+      "pattern_name": "Market commentary <-> deal readthrough cross-check",
+      "reference_source": "~/cos-pipeline/tools/cross_reference_briefing.py + check_u2.py",
+      "inherited_by_sections": [15, 18],
+      "inherited_by_planes": ["P3", "P7"],
+      "extension_notes": "Readthrough engine matches external items to programs via P7 authority graph"
+    },
+    {
+      "pattern_id": "CC1",
+      "pattern_name": "Claude Code over API",
+      "reference_source": "~/.claude/CLAUDE.md",
+      "inherited_by_sections": [2, 3],
+      "inherited_by_planes": [],
+      "extension_notes": "All pipeline code uses Claude Code subagents/skills; raw Anthropic SDK only where no Claude Code primitive exists"
+    }
+  ],
+  "knowledge_graph_seed": {
+    "stakeholders": [
+      {"id": "stake-001", "label": "Greg Beard", "type": "person", "attributes": {"role": "Director", "agency": "DOE OEDF"}},
+      {"id": "stake-002", "label": "OMB Resource Mgmt Office", "type": "office", "attributes": {"agency": "OMB"}}
+    ],
+    "programs": [
+      {"id": "prog-001", "label": "Example Loan Guarantee Program", "type": "program", "attributes": {"authority": "EPAct 2005 Title XVII"}}
+    ],
+    "authorities": [
+      {"id": "auth-001", "label": "EPAct 2005 Title XVII", "type": "statute"}
+    ],
+    "commitments": [
+      {"id": "comm-001", "label": "Deliver implementing guidance draft to OMB", "type": "commitment", "attributes": {"owner": "AI Lead", "due": "2026-07-15"}}
+    ],
+    "edges": [
+      {"source": "prog-001", "target": "auth-001", "relationship": "implements"},
+      {"source": "comm-001", "target": "stake-002", "relationship": "owed_to"},
+      {"source": "comm-001", "target": "prog-001", "relationship": "concerns"}
+    ]
+  },
+  "risks": [
+    {
+      "id": "R-001",
+      "risk": "ATO delay blocks rollout beyond Day 30 foundations",
+      "probability": "high",
+      "impact": "high",
+      "mitigation_owner": "AI Lead + CISO",
+      "mitigation_action": "Inherit ATO from existing FedRAMP-cleared Claude tenant; pre-stage ATO package",
+      "residual_risk": "medium",
+      "section_refs": [10, 11]
+    },
+    {
+      "id": "R-002",
+      "risk": "Hallucination in OMB-bound implementing guidance draft",
+      "probability": "medium",
+      "impact": "high",
+      "mitigation_owner": "Governance Lead",
+      "mitigation_action": "Mandatory human-in-the-loop review; authority-traceability-check skill enforced; quote-and-cite policy on every official artifact",
+      "residual_risk": "low",
+      "section_refs": [9, 18]
+    },
+    {
+      "id": "R-003",
+      "risk": "Union grievance filed on span-function automation before labor relations pre-clearance",
+      "probability": "high",
+      "impact": "high",
+      "mitigation_owner": "GC + AI Lead",
+      "mitigation_action": "Obtain labor relations pre-clearance before any automation demo to span function staff. Draft union MOU template. Co-design workflows with affected employees, not for them.",
+      "residual_risk": "medium",
+      "section_refs": [8, 9]
+    },
+    {
+      "id": "R-004",
+      "risk": "Signal quality gate miscalibrated — high-value items archived, noise surfaced",
+      "probability": "medium",
+      "impact": "high",
+      "mitigation_owner": "AI Lead",
+      "mitigation_action": "Run signal quality gate in 'audit mode' for first 30 days — log triage decisions but do not suppress any items. Review weekly with program managers. Tune thresholds per program type before enforcing suppression.",
+      "residual_risk": "low",
+      "section_refs": [13, 15]
+    }
+  ],
+  "open_questions": [
+    {"id": "Q-001", "question": "Which FedRAMP gov cloud is the target host?", "owner": "CIO + AI Lead", "status": "open", "due_date": "2026-06-15", "section_refs": [10, 13]},
+    {"id": "Q-002", "question": "Which 3 programs are lighthouse candidates?", "owner": "Group Head", "status": "open", "due_date": "2026-06-30", "section_refs": [10]},
+    {
+      "id": "Q-003",
+      "question": "Which synthesis model cadence is sustainable given Anthropic API costs? Opus at 7:45am daily for group head is the highest-cost pass — does the budget support this?",
+      "owner": "AI Lead + CFO",
+      "status": "open",
+      "due_date": "2026-07-01",
+      "section_refs": [11, 13]
+    },
+    {
+      "id": "Q-004",
+      "question": "What is the labor relations strategy for span function automation? Union MOU required before any workflow demo to legal or finance staff.",
+      "owner": "GC + AI Lead",
+      "status": "open",
+      "due_date": "2026-06-15",
+      "section_refs": [8, 9]
+    }
+  ],
+  "actions": [
+    {
+      "action_id": "a1b2c3d4",
+      "verb_first_action": "Confirm ATO posture with CISO and document inheritance path",
+      "owner": "AI Lead",
+      "due_date": "2026-06-07",
+      "parties": ["AI Lead", "CISO"],
+      "context": "Day-0 foundations require clarity on whether existing FedRAMP tenant can be inherited",
+      "priority": "high",
+      "source_artifact_id": "blueprint-section-10",
+      "dashboard_routing": {"layer": "L1", "surfaces": ["executive", "admin"], "plane": "P2"},
+      "status": "open",
+      "section_refs": [10]
+    },
+    {
+      "action_id": "e5f6g7h8",
+      "verb_first_action": "Identify 3 lighthouse programs for Days 31-90 deployment",
+      "owner": "Group Head",
+      "due_date": "2026-06-30",
+      "parties": ["Group Head", "AI Lead", "6 DRs"],
+      "context": "Need one high-performer, one struggler, one new launch per Section 10 phase plan",
+      "priority": "high",
+      "source_artifact_id": "blueprint-section-10",
+      "dashboard_routing": {"layer": "L1", "surfaces": ["executive"], "plane": "P2"},
+      "status": "open",
+      "section_refs": [10]
+    }
+  ],
+  "costs": {
+    "by_phase": [
+      {"phase_id": "P0-30", "fte_cost_usd": 350000, "tech_cost_usd": 80000, "contractor_cost_usd": 150000, "training_cost_usd": 20000, "ato_cost_usd": 50000, "total_usd": 650000},
+      {"phase_id": "P31-90", "fte_cost_usd": 700000, "tech_cost_usd": 150000, "contractor_cost_usd": 400000, "training_cost_usd": 80000, "ato_cost_usd": 50000, "total_usd": 1380000}
+    ]
+  },
+  "kpis_org_wide": [
+    {"name": "Programs on standard kit", "target": "30/30 by Day 365", "current": "0/30", "trend": "unknown", "measurement_cadence": "monthly"},
+    {"name": "Inter-agency commitment SLA adherence", "target": "90% on-time", "current": "baseline TBD", "trend": "unknown", "measurement_cadence": "weekly"}
+  ],
+  "owner_whitelist": [
+    {"name": "Group Head", "role": "Senior Executive", "span": "Full portfolio"},
+    {"name": "AI Lead", "role": "Director of AI", "span": "AI function"},
+    {"name": "CISO", "role": "Chief Information Security Officer", "span": "Cybersecurity + ATO"},
+    {"name": "GC", "role": "General Counsel", "span": "Legal + FOIA + ethics"},
+    {"name": "CFO", "role": "Chief Financial Officer", "span": "Budget + finance"},
+    {"name": "Performance Eval Director", "role": "Director", "span": "Evaluation function"},
+    {"name": "Inter-Agency Lead", "role": "Director", "span": "External coordination"},
+    {"name": "External Intel Lead", "role": "Director of External Intelligence", "span": "P3 feed taxonomy + readthrough engine"},
+    {"name": "Knowledge Engineer", "role": "Knowledge Graph Engineer", "span": "P7 knowledge graph + similarity map + peer learning engine"}
+  ],
+  "glossary": [
+    {"term": "ATO", "definition": "Authority to Operate (federal cybersecurity authorization)", "scope": "federal"},
+    {"term": "FedRAMP", "definition": "Federal Risk and Authorization Management Program", "scope": "federal"},
+    {"term": "PIV/CAC", "definition": "Personal Identity Verification / Common Access Card (federal smartcard auth)", "scope": "federal"},
+    {"term": "PCC/DC/IPC", "definition": "Principals/Deputies/Interagency Policy Committee — NSC coordination levels", "scope": "federal"},
+    {"term": "LRM", "definition": "Legislative Referral Memorandum (OMB clearance process for legislative proposals)", "scope": "federal"},
+    {"term": "Program-in-a-Box", "definition": "Standard Claude Code kit deployed to every program on launch", "scope": "agency"}
+  ],
+  "tombstones": [],
+  "synthesis_layers": {
+    "program": [
+      {
+        "program_id": "prog-lgp",
+        "generated_at": "2026-05-24T06:30:00Z",
+        "model": "haiku",
+        "items": [
+          {
+            "type": "commitment_at_risk",
+            "title": "DOE LPO credit memo 3 days overdue",
+            "body": "Credit Director sign-off pending. Counterparty expects delivery by COB today. Recommend escalating to DR Energy.",
+            "program_ids": ["prog-lgp"],
+            "urgency": "immediate",
+            "click_through": "/commitments/comm-001"
+          },
+          {
+            "type": "peer_learning",
+            "title": "Peer learning: Program 14 resolved similar DOT commitment slip",
+            "body": "Program 14 (similar profile: same agency tier, active phase) escalated to Deputy AS two weeks before due date rather than waiting. Commitment renegotiated with 3-week extension, no adverse timeline effect.",
+            "program_ids": ["prog-lgp", "prog-014"],
+            "urgency": "this_week",
+            "click_through": "/peer-learnings/pl-001"
+          },
+          {
+            "type": "external_intel",
+            "title": "GAO report directly relevant: loan guarantee best practices",
+            "body": "GAO-26-104321 released May 21 contains a 12-point best-practice checklist for federal loan guarantee programs. 4 of 12 points are not currently in your program kit. Recommend PM review by June 1.",
+            "program_ids": ["prog-lgp"],
+            "urgency": "this_week",
+            "click_through": "/external-intel/ei-001"
+          }
+        ]
+      }
+    ],
+    "dr": [
+      {
+        "dr_id": "dr-energy",
+        "generated_at": "2026-05-24T07:15:00Z",
+        "model": "sonnet",
+        "programs_in_span": ["prog-lgp", "prog-grant-a", "prog-new-3"],
+        "items": [
+          {
+            "type": "program_exception",
+            "title": "LGP: 1 commitment overdue, credit director sign-off pending",
+            "body": "DOE LPO credit memo 3 days late. Recommend you contact Credit Director directly — PM has already sent two nudges.",
+            "program_ids": ["prog-lgp"],
+            "urgency": "immediate",
+            "click_through": "/dr/dr-energy/programs/prog-lgp"
+          },
+          {
+            "type": "cross_program_pattern",
+            "title": "Grant Program A and LGP both in DOE LPO negotiation this week — share read-ahead",
+            "body": "Both programs have active commitments with the same DOE LPO desk officer. Coordinating read-ahead materials would avoid conflicting signals to the same counterparty.",
+            "program_ids": ["prog-lgp", "prog-grant-a"],
+            "urgency": "this_week",
+            "click_through": "/dr/dr-energy/cross-program"
+          }
+        ]
+      }
+    ],
+    "group_head": {
+      "generated_at": "2026-05-24T07:45:00Z",
+      "model": "opus",
+      "signals": [
+        {
+          "type": "decision_required",
+          "title": "Approve $40M reprogramming for Project Cholla — due May 26",
+          "body": "CFO recommends approval. 2 of 6 DRs support. One open question on scoring methodology. Decision memo in your inbox.",
+          "urgency": "immediate",
+          "click_through": "/decisions/dec-001"
+        },
+        {
+          "type": "commitment_at_risk",
+          "title": "2 inter-agency commitments overdue across portfolio — escalation recommended",
+          "body": "DOE LPO credit memo (LGP, 3d late) and DOE FE export framework (6d late). Both have identified resolution paths. DR Energy and DR Markets have been notified.",
+          "urgency": "immediate",
+          "click_through": "/commitments?filter=overdue"
+        },
+        {
+          "type": "external_intel",
+          "title": "OMB M-26-12 released Friday — affects 8 programs, response due May 25",
+          "body": "Draft response prepared by AI Lead. Requires your sign-off. 8 programs implicated; 3 require action items added to PM queues.",
+          "urgency": "immediate",
+          "click_through": "/external-intel/ei-003"
+        }
+      ],
+      "decisions_pending": 3,
+      "programs_flagged": 6,
+      "external_intel_count": 5
+    }
+  },
+  "external_intelligence": [
+    {
+      "id": "ei-001",
+      "source_tier": "T1_regulatory",
+      "source_name": "GAO",
+      "title": "GAO-26-104321: Federal Loan Guarantee Programs — Best Practices for Program Design and Implementation",
+      "published_date": "2026-05-21",
+      "ingested_at": "2026-05-21T14:22:00Z",
+      "relevance_score": 9.2,
+      "actionability_score": 7.5,
+      "programs_matched": [
+        {
+          "program_id": "prog-lgp",
+          "relevance_reason": "Direct match: report covers Title XVII loan guarantee design and implementation, the exact statutory basis for LGP",
+          "so_what": "4 of 12 GAO best-practice criteria are not currently reflected in LGP's program kit. Specifically: (1) applicant feedback loop after denial, (2) annual portfolio stress test, (3) third-party credit review for transactions >$100M, (4) public reporting on approval timelines. None require additional resources — procedural additions only.",
+          "suggested_action": "LGP PM review GAO checklist against current program kit by 2026-06-01 and flag gaps for AI Lead"
+        }
+      ],
+      "stakeholders_mentioned": ["GAO", "OMB", "DOE LPO"],
+      "action_generated": "a3b4c5d6",
+      "routing_decision": "action_generated"
+    },
+    {
+      "id": "ei-002",
+      "source_tier": "T1_regulatory",
+      "source_name": "OMB",
+      "title": "OMB M-26-12: Updated Implementation Guidance for Agency AI Operations",
+      "published_date": "2026-05-21",
+      "ingested_at": "2026-05-21T09:15:00Z",
+      "relevance_score": 9.8,
+      "actionability_score": 9.5,
+      "programs_matched": [
+        {
+          "program_id": "prog-lgp",
+          "relevance_reason": "M-26-12 Section 4.2 covers AI-assisted regulatory review processes applicable to LGP's implementing guidance workflow",
+          "so_what": "LGP must document its AI-assisted review process in the next annual report. The new memo requires a HITL review log for any AI-generated regulatory text. LGP already has HITL gates but they are not logged in the required format.",
+          "suggested_action": "GC review M-26-12 Section 4.2 and confirm whether LGP's current HITL logging meets new requirements by 2026-05-28"
+        }
+      ],
+      "stakeholders_mentioned": ["OMB", "CAIO", "Agency CIOs"],
+      "action_generated": "a7b8c9d0",
+      "routing_decision": "action_generated"
+    },
+    {
+      "id": "ei-003",
+      "source_tier": "T4_congressional",
+      "source_name": "House Energy & Commerce",
+      "title": "House E&C Subcommittee Hearing: Federal Energy Financing Programs — May 28 2026",
+      "published_date": "2026-05-20",
+      "ingested_at": "2026-05-20T16:40:00Z",
+      "relevance_score": 8.1,
+      "actionability_score": 6.8,
+      "programs_matched": [
+        {
+          "program_id": "prog-lgp",
+          "relevance_reason": "LGP is explicitly named in the hearing notice; subcommittee has requested data on approval timelines and utilization rates",
+          "so_what": "Group Head will testify or be represented. 4 likely questions modeled from prior hearing transcripts and member statements: (1) approval timeline vs. industry benchmark, (2) small business utilization rate, (3) coordination with DOE LPO, (4) AI use in credit review. Prep packet drafted.",
+          "suggested_action": "Group Head review prep packet for May 28 hearing by 2026-05-26"
+        }
+      ],
+      "stakeholders_mentioned": ["House E&C Energy Subcommittee", "Ranking Member", "DOE"],
+      "action_generated": "b1c2d3e4",
+      "routing_decision": "action_generated"
+    }
+  ],
+  "peer_learnings": [
+    {
+      "id": "pl-001",
+      "target_program_id": "prog-lgp",
+      "source_program_id": "prog-014",
+      "situation_type": "commitment_slipping",
+      "learning": "Escalated from working-level to Deputy AS two weeks before the commitment due date rather than waiting for the miss. Sent a brief one-pager explaining the delay and proposed revised timeline.",
+      "outcome": "Commitment renegotiated with 3-week extension, no adverse effect on program timeline. DOT counterparty appreciated the advance notice.",
+      "source_log_ref": "prog-014/log/2026-03-14",
+      "similarity_basis": "Both programs share DOE as primary inter-agency partner, both in active execution phase with Title XVII authority",
+      "status": "surfaced",
+      "surfaced_at": "2026-05-24T06:30:00Z"
+    },
+    {
+      "id": "pl-002",
+      "target_program_id": "prog-new-3",
+      "source_program_id": "prog-grant-a",
+      "situation_type": "launch_delay",
+      "learning": "Ran a 30-minute 'pre-application office hours' session weekly starting 8 weeks before portal launch. Invited potential applicants to ask eligibility questions live. Reduced post-launch eligibility Q&A volume by 40%.",
+      "outcome": "Portal launched on schedule. First-week application volume 35% higher than projected. GS-12 analyst ran the sessions with no AI support required.",
+      "source_log_ref": "prog-grant-a/log/2026-02-28",
+      "similarity_basis": "Both programs are grant programs in stand-up phase with external applicant-facing components",
+      "status": "surfaced",
+      "surfaced_at": "2026-05-24T06:35:00Z",
+      "best_practice_id": "BP-001"
+    }
+  ],
+  "best_practices": [
+    {
+      "id": "BP-001",
+      "title": "Pre-application office hours — weekly 30-min sessions starting 8 weeks before portal launch",
+      "source_program_id": "prog-grant-a",
+      "practice_description": "Run weekly 30-minute open Q&A sessions for potential applicants beginning 8 weeks before portal launch. Hosted by one GS-12 analyst. No preparation required — answer eligibility questions live and log the questions to improve FAQs.",
+      "outcome_evidence": "Reduced post-launch eligibility Q&A volume 40%. First-week application volume 35% above projection. Zero added FTE.",
+      "applicable_program_types": ["grant", "loan_guarantee", "application_portal"],
+      "status": "confirmed",
+      "confirmed_by": "AI Lead",
+      "confirmed_at": "2026-05-20",
+      "adopted_by_programs": [],
+      "section_refs": [4, 7]
+    },
+    {
+      "id": "BP-002",
+      "title": "Structured comment triage taxonomy — rulemaking dockets >200 comments",
+      "source_program_id": "prog-reg-track-b",
+      "practice_description": "Apply a 6-category taxonomy to public comments before substantive review: (1) Duplicative, (2) Out-of-scope, (3) Procedural, (4) Technical/factual, (5) Policy, (6) Requires external expert. Categories 1-3 handled by GS-11 analyst with Haiku assist. Categories 4-6 routed to subject matter expert.",
+      "outcome_evidence": "Cut comment review time 55% on a 450-comment docket. Expert reviewer time freed from 80% routine to 20% routine.",
+      "applicable_program_types": ["rulemaking", "notice_and_comment", "regulatory"],
+      "status": "confirmed",
+      "confirmed_by": "AI Lead",
+      "confirmed_at": "2026-05-22",
+      "adopted_by_programs": [],
+      "section_refs": [4, 7, 18]
+    }
+  ],
+  "role_visibility": {
+    "compile_targets": [
+      {
+        "tier": "staff",
+        "output_file": "state-staff.json",
+        "included_fields": ["meta", "actions"],
+        "excluded_fields": ["synthesis_layers", "peer_learnings", "best_practices", "external_intelligence", "risks", "open_questions", "roadmap"],
+        "synthesis_layer": null,
+        "program_scope": "own_only"
+      },
+      {
+        "tier": "program_manager",
+        "output_file": "state-pm.json",
+        "included_fields": ["meta", "org_parameters", "actions", "risks", "open_questions", "external_intelligence", "peer_learnings", "best_practices", "synthesis_layers.program", "knowledge_graph_seed"],
+        "excluded_fields": ["synthesis_layers.dr", "synthesis_layers.group_head"],
+        "synthesis_layer": "program",
+        "program_scope": "own_only"
+      },
+      {
+        "tier": "dr",
+        "output_file": "state-dr.json",
+        "included_fields": ["meta", "org_parameters", "synthesis_layers.dr", "actions", "risks", "open_questions", "external_intelligence", "best_practices", "roadmap"],
+        "excluded_fields": ["synthesis_layers.program", "synthesis_layers.group_head", "peer_learnings"],
+        "synthesis_layer": "dr",
+        "program_scope": "dr_span"
+      },
+      {
+        "tier": "group_head",
+        "output_file": "state-grouphead.json",
+        "included_fields": ["meta", "org_parameters", "synthesis_layers.group_head", "external_intelligence", "best_practices", "roadmap", "kpis_org_wide"],
+        "excluded_fields": ["synthesis_layers.program", "synthesis_layers.dr", "peer_learnings", "actions", "open_questions"],
+        "synthesis_layer": "group_head",
+        "program_scope": "full_portfolio"
+      },
+      {
+        "tier": "admin",
+        "output_file": "state-admin.json",
+        "included_fields": ["*"],
+        "excluded_fields": [],
+        "synthesis_layer": null,
+        "program_scope": "full_portfolio"
+      }
+    ],
+    "route_guards": [
+      {"route": "/exec", "minimum_tier": "group_head", "sso_role_attribute": "blueprint_role:group_head"},
+      {"route": "/dr/:dr_id", "minimum_tier": "dr", "sso_role_attribute": "blueprint_role:dr"},
+      {"route": "/program/:program_id", "minimum_tier": "program_manager", "sso_role_attribute": "blueprint_role:pm"},
+      {"route": "/submit", "minimum_tier": "staff", "sso_role_attribute": "blueprint_role:staff"},
+      {"route": "/admin", "minimum_tier": "admin", "sso_role_attribute": "blueprint_role:admin"}
+    ],
+    "system_prompt_constraints": {
+      "group_head": "You have access to portfolio-level synthesis for the full program portfolio. You do NOT have access to individual program action items, program-level operational detail, or peer learning cards. If asked for that level of detail, direct the user to the relevant DR or program manager.",
+      "dr": "You have access to exception-level summaries for programs in your span. You do NOT have access to individual staff-level task assignments or program-internal operational detail not yet escalated to you. If asked, direct the user to the program manager.",
+      "program_manager": "You have access to full operational detail for your program(s). You do NOT have access to other programs' raw operational detail — only curated peer learning cards are surfaced from adjacent programs.",
+      "staff": "You have access to your own program's action queue and capture surface. You do NOT have access to the dashboard or other programs."
+    }
+  }
+}
