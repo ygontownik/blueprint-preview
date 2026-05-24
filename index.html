@@ -517,6 +517,71 @@ li { margin-bottom: 4px; }
 .small { font-size: 12px; }
 .spacer { height: 24px; }
 
+.role-tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.role-tier-badge.exec { background: var(--accent-deep); color: white; }
+.role-tier-badge.dr { background: var(--info); color: white; }
+.role-tier-badge.pm { background: var(--warning); color: white; }
+.role-tier-badge.staff { background: var(--border-strong); color: var(--text); }
+.signal-item {
+  background: var(--surface-2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.signal-item:last-child { margin-bottom: 0; }
+.signal-item .signal-type {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+.signal-item strong { display: block; font-size: 13px; margin-bottom: 2px; }
+.signal-item span { font-size: 12px; color: var(--text-muted); }
+.signal-item.decision { border-left-color: var(--warning); }
+.signal-item.risk { border-left-color: var(--danger); }
+.signal-item.intel { border-left-color: var(--info); }
+.signal-item.learning { border-left-color: var(--success); }
+.intel-item {
+  display: grid;
+  grid-template-columns: 52px 1fr 80px;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  align-items: start;
+}
+.intel-item:last-child { border-bottom: none; padding-bottom: 0; }
+.intel-item:first-child { padding-top: 0; }
+.intel-tier {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 6px;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 1.3;
+}
+.intel-tier.t1 { background: var(--danger-soft); color: var(--danger); }
+.intel-tier.t2 { background: var(--warning-soft); color: var(--warning); }
+.intel-tier.t3 { background: var(--info-soft); color: var(--info); }
+.intel-tier.t4 { background: var(--accent-soft); color: var(--accent); }
+.intel-score { font-size: 12px; color: var(--text-muted); text-align: right; }
+.intel-score strong { display: block; font-size: 15px; font-weight: 600; color: var(--text); }
+
 footer {
   max-width: var(--max-width);
   margin: 40px auto 24px;
@@ -901,6 +966,13 @@ footer {
       </div>
     </div>
     <div class="day-item">
+      <div class="day-icon">🔗</div>
+      <div class="day-text">
+        <strong>What a peer program figured out that applies to you</strong>
+        <span>One of your program directors opened their dashboard to find a learning card: "Program 14 handled the same DOT commitment slip last quarter by escalating two weeks early — worked." They didn't have to ask. The system matched their situation to Program 14's resolved problem and surfaced it automatically. Your 30 programs are collectively smarter than any one of them is alone.</span>
+      </div>
+    </div>
+    <div class="day-item">
       <div class="day-icon">📈</div>
       <div class="day-text">
         <strong>Performance pulse</strong>
@@ -1038,18 +1110,18 @@ footer {
   <div class="stage">
     <div class="stage-num">2</div>
     <div class="stage-body">
-      <h3>Claude extracts what matters</h3>
-      <div class="stage-what">Each captured artifact runs through an extraction skill — different model for different jobs (Sonnet for parsing transcripts, Haiku for fast routing, Opus for ambiguous cases). Out comes structured data: actions with named owners and due dates, decisions with context, commitments with named counterparties, intelligence with named programs it affects.</div>
-      <div class="stage-why"><strong>Why it matters:</strong> raw transcripts and inbox contents are unusable at scale. You need them turned into rows: <em>who owes what to whom by when</em>. That's the conversion this stage does.</div>
+      <h3>Every item is triaged for quality, then extracted</h3>
+      <div class="stage-what">Each captured artifact runs through two passes. First, a quality triage (Haiku, under 2 seconds): four dimensions scored — relevance to active programs (0–10), whether it requires a decision or action (0–10), whether it's already known / a duplicate (0–10), and how credible the source is (0–10). Items scoring below threshold go to a low-signal archive; they're not lost but they don't touch the dashboard. Items that pass go to extraction (Sonnet for transcripts, Opus for ambiguous cases): out comes structured data — actions with named owners and due dates, decisions with context, commitments with named counterparties, external intelligence with named programs it affects.</div>
+      <div class="stage-why"><strong>Why it matters:</strong> without quality triage, dashboards fill with low-value restates — every status meeting generates noise that dilutes signal. Without extraction, raw text is unusable. This stage converts noise into structured signal. The quality gate is what makes the dashboard trustworthy rather than overwhelming.</div>
     </div>
   </div>
 
   <div class="stage">
     <div class="stage-num">3</div>
     <div class="stage-body">
-      <h3>Everything gets routed to the right place</h3>
-      <div class="stage-what">An action goes to the owner's queue, the program's action register, the relevant DR's dashboard, and (if it's inter-agency) the commitment tracker. Owner names get validated against the org's owner registry — typos and ambiguous attributions get flagged for review rather than silently misattributed. External intelligence gets matched to the programs it touches via the authority graph (a Federal Register notice on rule X appears on the dashboard of every program implementing rule X).</div>
-      <div class="stage-why"><strong>Why it matters:</strong> the same fact needs to appear in every place where someone might look for it — without manual duplication. That's the "universal action flow" principle. Capture once, surface everywhere.</div>
+      <h3>Everything gets routed to the right place — including peer programs</h3>
+      <div class="stage-what">An action goes to the owner's queue, the program's action register, the relevant DR's dashboard, and (if it's inter-agency) the commitment tracker. Owner names get validated against the org's owner registry — typos and ambiguous attributions get flagged for review rather than silently misattributed. External intelligence gets matched to the programs it touches via the authority graph (a Federal Register notice on rule X appears on the dashboard of every program implementing rule X). And at this stage, the system also checks against the cross-program knowledge graph: does this situation resemble something another program has already navigated? If yes, a peer learning card is generated — "Program 14 handled a similar commitment slip with DOT last quarter by escalating two weeks early. It worked."</div>
+      <div class="stage-why"><strong>Why it matters:</strong> the same fact needs to appear everywhere someone might look for it — without manual duplication. And the cross-program matching means a program manager automatically benefits from every prior program's experience with the same counterparty or situation type. No one has to manually share knowledge. The system surfaces it.</div>
     </div>
   </div>
 
@@ -1083,9 +1155,18 @@ footer {
   <div class="stage">
     <div class="stage-num">7</div>
     <div class="stage-body">
-      <h3>The system gets smarter over time</h3>
-      <div class="stage-what">Best practices from your top-performing programs get extracted automatically and proposed for promotion into the standard kit. Patterns that surface as repeated drift (e.g., a particular kind of misattribution) get encoded as new rules in the learning ledger, with enforcement checks added. The practice patterns library grows — every cleared program design contributes its lessons to the next.</div>
-      <div class="stage-why"><strong>Why it matters:</strong> institutional knowledge in most orgs lives in people's heads and walks out the door at retirement. This system makes it accumulate in the codebase instead. Year 2 starts smarter than Year 1 ended.</div>
+      <h3>Information synthesizes differently for each level of the org</h3>
+      <div class="stage-what">Every morning, three synthesis passes run against the same canonical state — each calibrated to a different resolution. At 6:30am, Haiku runs a per-program synthesis: full operational detail, all actions, all commitments, all peer learning cards, matched external intelligence. At 7:15am, Sonnet runs a per-DR synthesis: across their 3–5 programs, only exceptions — programs needing their attention, cross-program resource conflicts, commitments at risk in the next 14 days. At 7:45am, Opus runs the group-head brief: 3–5 signals only. No individual action items. No operational status. Exceptions, decisions, cross-cutting risks, and an external intelligence digest. Four minutes to read, cover to cover. The group head never sees a 40-item action queue. They see what needs their attention.</div>
+      <div class="stage-why"><strong>Why it matters:</strong> every large org fails in the same way — leadership either sees too much (100-item dashboards they learn to ignore) or too little (hand-curated summaries that hide problems). Hierarchical synthesis solves both. Detail stays at the level that can act on it. Signal rises to the level that needs to decide. Same data, different resolution — generated by a model calibrated to the decision needs of each role.</div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-num">8</div>
+    <div class="stage-body">
+      <h3>The system gets smarter — and shares what it learns across programs</h3>
+      <div class="stage-what">Best practices from top-performing programs get extracted automatically (Opus reviews the last 90 days of logs, commitment completions, decision patterns) and proposed for promotion into the standard kit with a stable ID (BP-001, BP-002, etc.). But the system doesn't wait for a practice to be promoted before sharing it. The cross-program engine runs a nightly scan: for every program in a tagged situation type (commitment slipping, procurement delay, launch delay, etc.), it queries the knowledge graph for structurally similar programs that have faced the same situation. If it finds a match, it surfaces a specific, citable learning card to the program manager with source and outcome. At 6 months of operational history, the engine starts making pre-emptive pattern alerts — "Program 9's procurement approach matches the pattern that caused a 6-week delay for Program 2. Four weeks until their procurement action."</div>
+      <div class="stage-why"><strong>Why it matters:</strong> institutional knowledge in most orgs lives in people's heads and walks out the door. This system makes it accumulate in the codebase. Every program's resolved problem becomes the next program's early warning. Year 2 starts smarter than Year 1 ended — not because people remembered to share, but because the system is wired to surface it.</div>
     </div>
   </div>
 
@@ -1094,21 +1175,23 @@ footer {
     <div class="flow-diagram">
       <div class="flow-node"><div class="flow-step">1</div><div class="flow-title">Capture</div><div class="flow-desc">meetings, email,<br>docs, feeds</div></div>
       <div class="flow-arrow">→</div>
-      <div class="flow-node pipe"><div class="flow-step">2</div><div class="flow-title">Extract</div><div class="flow-desc">actions, decisions,<br>intel via Claude</div></div>
+      <div class="flow-node pipe"><div class="flow-step">2</div><div class="flow-title">Triage</div><div class="flow-desc">quality gate:<br>relevance, novelty,<br>actionability</div></div>
       <div class="flow-arrow">→</div>
-      <div class="flow-node pipe"><div class="flow-step">3</div><div class="flow-title">Route</div><div class="flow-desc">to owners, programs,<br>DRs, inter-agency</div></div>
+      <div class="flow-node pipe"><div class="flow-step">3</div><div class="flow-title">Extract</div><div class="flow-desc">actions, decisions,<br>intel + peer match</div></div>
       <div class="flow-arrow">→</div>
-      <div class="flow-node pipe"><div class="flow-step">4</div><div class="flow-title">Compile</div><div class="flow-desc">+ health checks</div></div>
+      <div class="flow-node pipe"><div class="flow-step">4</div><div class="flow-title">Route</div><div class="flow-desc">owners, programs,<br>DRs, inter-agency</div></div>
       <div class="flow-arrow">→</div>
-      <div class="flow-node state"><div class="flow-title">blueprint-<br>state.json</div><div class="flow-desc">canonical state</div></div>
+      <div class="flow-node pipe"><div class="flow-step">5</div><div class="flow-title">Compile</div><div class="flow-desc">health checks,<br>role-tier masking</div></div>
       <div class="flow-arrow">→</div>
-      <div class="flow-node pipe"><div class="flow-step">5</div><div class="flow-title">Serve</div><div class="flow-desc">cached HTML<br>hydration</div></div>
+      <div class="flow-node state"><div class="flow-title">canonical<br>state</div><div class="flow-desc">5 role-tier<br>JSON files</div></div>
       <div class="flow-arrow">→</div>
-      <div class="flow-node surf"><div class="flow-step">6</div><div class="flow-title">You + Team</div><div class="flow-desc">read + act</div></div>
+      <div class="flow-node pipe"><div class="flow-step">6</div><div class="flow-title">Synthesize</div><div class="flow-desc">Haiku→Sonnet→Opus<br>per role tier</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node surf"><div class="flow-step">7</div><div class="flow-title">You + Team</div><div class="flow-desc">right detail<br>for your level</div></div>
       <div class="flow-arrow">↻</div>
-      <div class="flow-node pipe"><div class="flow-step">7</div><div class="flow-title">Learn</div><div class="flow-desc">best practices<br>back into kit</div></div>
+      <div class="flow-node pipe"><div class="flow-step">8</div><div class="flow-title">Learn</div><div class="flow-desc">BP library +<br>peer propagation</div></div>
     </div>
-    <div style="margin-top: 14px; font-size: 12px; color: var(--text-muted); text-align: center;">Steps 6 → 4 (actions write back) and 7 → 4 (learnings update standard kit) close the loop</div>
+    <div style="margin-top: 14px; font-size: 12px; color: var(--text-muted); text-align: center;">Steps 7→5 (actions write back) · 8→5 (learnings update kit) · 8→3 (peer patterns feed extraction) close the loop</div>
   </div>
 
   <h2>The two axes you'll see everywhere</h2>
@@ -1659,8 +1742,157 @@ footer {
   </div>
   <p class="mockup-note">📌 Wired to P6 (synthesis), P7 (knowledge graph), L6 (learning ledger). Best-practice promotions update Program-in-a-Box on quarterly cadence.</p>
 
+  <h2>5. DR-Level Exception View</h2>
+  <p class="muted small" style="margin-top: -4px; margin-bottom: 8px;">What a Direct Report opens every morning. Their span only, exceptions only — no operational detail unless they drill in.</p>
+  <div class="browser-chrome">
+    <div class="browser-dots"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
+    <div class="browser-url">🔒 blueprint-dashboard.gov/dr/dr-energy</div>
+  </div>
+  <div class="mockup-frame">
+    <div class="mock-header">
+      <div>
+        <div class="mock-greeting">DR Energy — Morning Brief</div>
+        <div class="mock-date">Monday · May 24, 2026 · 7:18 AM ET · <strong>3 programs in your span · 2 need your attention today</strong></div>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <span class="role-tier-badge dr">DR VIEW</span>
+        <div class="classif-banner">UNCLASSIFIED // FOUO</div>
+      </div>
+    </div>
+
+    <div class="grid grid-4">
+      <div class="kpi"><div class="kpi-label">Programs in span</div><div class="kpi-value">3</div><div class="kpi-sub">LGP · Grant-A · NewProg-3</div></div>
+      <div class="kpi"><div class="kpi-label">Need your attention</div><div class="kpi-value">2</div><div class="kpi-sub" style="color: var(--warning)">LGP + NewProg-3</div></div>
+      <div class="kpi"><div class="kpi-label">Commitments at risk</div><div class="kpi-value">1</div><div class="kpi-sub" style="color: var(--danger)">DOE LPO · 3d overdue</div></div>
+      <div class="kpi"><div class="kpi-label">Cross-program alert</div><div class="kpi-value">1</div><div class="kpi-sub">coordinate DOE LPO approach</div></div>
+    </div>
+
+    <h3 style="margin-top: 24px;">⚠️ Programs needing your attention</h3>
+    <div class="card">
+      <div class="signal-item decision">
+        <div class="signal-type">🔴 Commitment overdue · LGP</div>
+        <strong>DOE LPO credit memo — 3 days late, Credit Director sign-off pending</strong>
+        <span>PM has sent two nudges. Recommend you contact Credit Director directly. Counterparty expecting delivery by COB today. System recommended action: direct call or email to Credit Director by 9am.</span>
+        <div style="margin-top: 8px;"><button class="mini-btn">Contact Credit Director</button><button class="mini-btn">Reassign</button><button class="mini-btn">View commitment</button></div>
+      </div>
+      <div class="signal-item risk">
+        <div class="signal-type">🟡 Launch risk · NewProg-3</div>
+        <strong>Portal launch delayed 8 days — applicant outreach not yet started</strong>
+        <span>Grant-A peer learning surfaced: pre-application office hours (weekly 30-min, 8 weeks before launch) reduced post-launch Q&amp;A 40%. NewProg-3 is 6 weeks from launch and has not started this. Recommend PM adopt BP-001 now.</span>
+        <div style="margin-top: 8px;"><button class="mini-btn">Send PM learning card</button><button class="mini-btn">Schedule check-in</button></div>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 24px;">🔗 Cross-program coordination alert</h3>
+    <div class="card">
+      <div class="signal-item learning">
+        <div class="signal-type">📡 Both LGP and Grant-A are engaging same DOE LPO desk officer this week</div>
+        <strong>Coordinate read-ahead materials to avoid conflicting signals to the same counterparty</strong>
+        <span>LGP has a credit memo commitment; Grant-A has a separate co-investment inquiry. The same desk officer is counterparty on both. Recommend you brief both PMs to align messaging before either reaches out.</span>
+        <div style="margin-top: 8px;"><button class="mini-btn approve">Set up coordination call</button><button class="mini-btn">Dismiss</button></div>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 24px;">✅ Grant Program A — on track, no DR action needed</h3>
+    <div class="card" style="border-left: 3px solid var(--success);">
+      <div style="font-size: 13px; color: var(--text-muted);">Index: <strong style="color: var(--success);">0.94 ↑</strong> &nbsp;·&nbsp; Commitments: <strong>all on track</strong> &nbsp;·&nbsp; Deliverables: <strong>2 of 3 this week completed</strong> &nbsp;·&nbsp; <a href="#">Drill into program →</a></div>
+    </div>
+  </div>
+  <p class="mockup-note">📌 DR view synthesized by Sonnet at 7:15am from same canonical state as group head and program views. DR sees exceptions only — no individual action-item detail unless they drill in. Cross-program alerts fire when structurally related items land in their span simultaneously.</p>
+
+  <h2>6. External Intelligence Feed</h2>
+  <p class="muted small" style="margin-top: -4px; margin-bottom: 8px;">The policy, regulatory, and congressional environment — continuously monitored, matched to your programs, annotated with "what this means for you specifically."</p>
+  <div class="browser-chrome">
+    <div class="browser-dots"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
+    <div class="browser-url">🔒 blueprint-dashboard.gov/intel</div>
+  </div>
+  <div class="mockup-frame">
+    <div class="mock-header">
+      <div>
+        <div class="mock-greeting">External Intelligence</div>
+        <div class="mock-date">May 19–24, 2026 · 23 items ingested · 8 matched to programs · 3 actions generated</div>
+      </div>
+      <div class="classif-banner">UNCLASSIFIED // FOUO</div>
+    </div>
+
+    <div class="filter-chips">
+      <div class="chip active">All (23)</div>
+      <div class="chip">T1 Regulatory (9)</div>
+      <div class="chip">T2 Agency (6)</div>
+      <div class="chip">T3 Market (4)</div>
+      <div class="chip">T4 Congressional (4)</div>
+      <div class="chip">Action generated (3)</div>
+      <div class="chip">Affects my programs (8)</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔴 High relevance — action required</div>
+      <div class="intel-item">
+        <div><span class="intel-tier t1">T1<br>Regulatory</span></div>
+        <div>
+          <strong>OMB M-26-12 — Updated AI operations guidance (May 21)</strong>
+          <div style="margin-top: 4px; font-size: 12px; color: var(--text-muted);">Affects 8 programs. Section 4.2 requires HITL review log for AI-assisted regulatory text. Your programs already have HITL gates but not in the required format.</div>
+          <div style="margin-top: 6px; background: var(--accent-soft); padding: 8px 10px; border-radius: var(--radius-sm); font-size: 12px;"><strong style="color: var(--accent-deep);">So what for you:</strong> GC must confirm whether current HITL logging meets M-26-12 requirements before 2026-05-28. Draft response to OMB due May 25 — AI Lead has a draft ready for your sign-off.</div>
+          <div style="margin-top: 6px;"><span class="badge badge-high">Action generated</span> <span class="badge badge-medium">8 programs</span></div>
+        </div>
+        <div class="intel-score"><strong>9.8</strong>relevance</div>
+      </div>
+
+      <div class="intel-item">
+        <div><span class="intel-tier t4">T4<br>Congress</span></div>
+        <div>
+          <strong>House E&amp;C Subcommittee Hearing — Energy Financing, May 28</strong>
+          <div style="margin-top: 4px; font-size: 12px; color: var(--text-muted);">LGP named explicitly. Subcommittee requested data on approval timelines and utilization rates.</div>
+          <div style="margin-top: 6px; background: var(--accent-soft); padding: 8px 10px; border-radius: var(--radius-sm); font-size: 12px;"><strong style="color: var(--accent-deep);">So what for you:</strong> 4 likely questions modeled from prior hearing transcripts: (1) approval timeline vs. benchmark, (2) small business utilization, (3) DOE LPO coordination, (4) AI in credit review. Prep packet drafted — Group Head review needed by May 26.</div>
+          <div style="margin-top: 6px;"><span class="badge badge-high">Action generated</span> <span class="badge badge-medium">2 programs</span></div>
+        </div>
+        <div class="intel-score"><strong>8.1</strong>relevance</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 16px;">
+      <div class="card-title">🟡 Medium relevance — context enrichment, no action needed</div>
+      <div class="intel-item">
+        <div><span class="intel-tier t1">T1<br>Regulatory</span></div>
+        <div>
+          <strong>GAO-26-104321: Federal Loan Guarantee Best Practices (May 21)</strong>
+          <div style="margin-top: 4px; font-size: 12px; color: var(--text-muted);">12-point checklist for loan guarantee program design. 4 of 12 criteria not currently in LGP's program kit.</div>
+          <div style="margin-top: 6px; font-size: 12px; color: var(--text-muted); font-style: italic;">Added to LGP context file. PM notified. No immediate action required — review by June 1.</div>
+          <div style="margin-top: 6px;"><span class="badge badge-medium">Context only</span> <span class="badge badge-low">1 program</span></div>
+        </div>
+        <div class="intel-score"><strong>9.2</strong>relevance</div>
+      </div>
+      <div class="intel-item">
+        <div><span class="intel-tier t2">T2<br>Agency</span></div>
+        <div>
+          <strong>DOE NEPA categorical exclusion update — new guidance on infrastructure projects (May 18)</strong>
+          <div style="margin-top: 4px; font-size: 12px; color: var(--text-muted);">Affects due-diligence process for 4 programs with NEPA requirements. Existing process already compliant.</div>
+          <div style="margin-top: 6px; font-size: 12px; color: var(--text-muted); font-style: italic;">Added to Programs 3, 7, 14, LGP context files. No action required.</div>
+          <div style="margin-top: 6px;"><span class="badge badge-medium">Context only</span> <span class="badge badge-low">4 programs</span></div>
+        </div>
+        <div class="intel-score"><strong>7.4</strong>relevance</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 16px;">
+      <div class="card-title">⚪ Low relevance — archived, not surfaced to programs</div>
+      <div style="font-size: 13px; color: var(--text-muted); padding: 8px 0;">15 items ingested this week fell below the relevance threshold and were archived. They remain searchable but do not appear on any program dashboard. <a href="#">View archive →</a></div>
+    </div>
+
+    <div class="card" style="margin-top: 16px; border-left: 3px solid var(--info);">
+      <div class="card-title">👤 Stakeholder intelligence — tracked public statements</div>
+      <div class="signal-item intel">
+        <div class="signal-type">📢 Deputy Secretary, DOT — Senate Commerce testimony, May 22</div>
+        <strong>Public confirmation of inter-agency coordination with your agency on framework finalization</strong>
+        <span>"We expect the inter-agency coordination framework to be finalized by Q4 — we've been in active discussion with [your agency] on the specific implementation approach." This is the first public confirmation of the commitment tracked since June 1. Recommend Program 7 PM review transcript and confirm alignment with internal commitment record.</span>
+        <div style="margin-top: 8px;"><button class="mini-btn approve">Update commitment status</button><button class="mini-btn">View full testimony</button><button class="mini-btn">Flag for DR</button></div>
+      </div>
+    </div>
+  </div>
+  <p class="mockup-note">📌 P3 External Intelligence Ingestion. Tier 1 feeds (Federal Register, OMB, GAO, IG) run daily. Tiers 2–4 run daily/weekly per source. Readthrough engine matches items to programs via P7 authority graph. Stakeholder intelligence tracks public records only — testimony, speeches, press releases. Actions route via P2 universal action flow.</p>
+
   <div class="flow-callout" style="margin-top: 32px;">
-    <strong>Common thread across all 4 mockups:</strong> same canonical state, same design system, same UX patterns (action queues, KPI cards, decision items, filterable tables). A user moving from executive view to program view to inter-agency tracker to performance pulse never has to relearn the interface. And every action they take in any view writes back to the canonical state — visible from every other view in the next refresh.
+    <strong>Common thread across all 6 mockups:</strong> same canonical state, same design system, same UX patterns (action queues, KPI cards, decision items, filterable tables) — but each view is synthesized to the right resolution for the person reading it. The group head sees 3–5 signals. The DR sees exceptions in their span. The program manager sees full operational detail plus peer learnings. Staff see only their own capture surface. Everyone is reading from the same source of truth, at the resolution that matches their role. And every action taken in any view writes back — visible from every other view in the next refresh.
   </div>
 </section>
 
